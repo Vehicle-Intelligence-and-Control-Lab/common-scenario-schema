@@ -19,7 +19,6 @@ pip install -r requirements.txt
 ## Usage
 
 ### 1. CSS for logical scenario (Code)
-
 After the logical scenarios are created or programmed in the framework of CarMaker or MORAI SIM (i.e., XOSC), create a common scenario schema (CSS) corresponding to the scenario database. 
 The schema code for databasing logical scenarios created with MORAI is ```css_for_xosc.py```.
 
@@ -46,7 +45,6 @@ save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI P
 ```
 
 ### 2. Generation of raw parameter space (Manual)
-
 - rawPS: Parameter ranges defined by expert knowledge
 - rawPS_Dim: Adding the parameter dimension of an existing scenario
 - rawPS_Extend: Extending parameter ranges for existing scenarios
@@ -54,8 +52,7 @@ save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI P
 - rawPS_New: Defining scenario parameters at the wrong point in time for a non-existent algorithm in an existing scenario catalog
 
 ### 3. CSS for raw parameter space (Code)
-
-
+Generate a schema for databaseization with the created raw parameter space
 
 
 
