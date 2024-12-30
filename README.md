@@ -11,7 +11,7 @@ The scenario-based approach is used for generation of safety-critical scenarios.
 ## Installation
 
 Installing Packages
-```
+```Python
 pip install -r requirements.txt
 ```
 
