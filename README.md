@@ -25,19 +25,19 @@ The schema code for databasing logical scenarios created with MORAI is ```css_fo
 ```Python
 ##################### Setting ##########################
 
-# 생성할 Logical scenario catalog
+# Logical scenario catalog
 TESTBED = 0
 SOTIF_1st = 0
 SOTIF_2nd = 1
 SOTIF_3rd = 0
 
-# Logical scenario 생성 토글
+# Logical scenario toggle
 single_toggle = 1              # 1:ON  0:OFF
 i = 12                           # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
 
 multiple_toggle =0             # 1:ON  0:OFF
 
-# 파일 경로
+# File path
 registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\Registration"
 save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\Json"
 
@@ -59,6 +59,7 @@ The code for generating the schema is ```css_for_RawPS.py```.
 This is the code that populates the schema with road information relevant to the scenario generation. 
 The code for adding this information is ```css_for_road.py```.
 
+### 5. Selection of parameter space (Code)
 
 
 
