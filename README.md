@@ -47,7 +47,11 @@ save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI P
 
 ### 2. Generation of raw parameter space
 
-- asd
+- rawPS: Parameter ranges defined by expert knowledge
+- rawPS_Dim: Adding the parameter dimension of an existing scenario
+- rawPS_Extend: Extending parameter ranges for existing scenarios
+- rawPS_Geometry: Changing road terrain in an existing scenario
+- rawPS_New: Defining scenario parameters at the wrong point in time for a non-existent algorithm in an existing scenario catalog
 
 
 
