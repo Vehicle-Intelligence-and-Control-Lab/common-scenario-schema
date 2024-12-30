@@ -8,20 +8,13 @@ The scenario-based approach is used for generation of safety-critical scenarios.
 - [Installation](#installation)
 - [Usage](#usage)
 
-## Platform/Device Support
-
-This SDK has been developed tested on a `esp32s3` and `linux`. You don't need any physical hardware
-to run this SDK. You can use it from Linux directly.
-
-To use it on hardware purchase either of these microcontrollers. Others may work, but this is what
-has been developed against.
-
-* [Freenove ESP32-S3-WROOM](https://www.amazon.com/gp/product/B0BMQ8F7FN)
-* [Sonatino - ESP32-S3 Audio Development Board](https://www.amazon.com/gp/product/B0BVY8RJNP)
-
-You can get a ESP32S3 for much less money on eBay/AliExpress.
-
 ## Installation
+
+Installing Packages
+
+```plaintext
+pip install -r requirements.txt
+```
 
 `protoc` must be in your path with `protobufc` installed.
 
