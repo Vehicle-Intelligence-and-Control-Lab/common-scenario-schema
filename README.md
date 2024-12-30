@@ -12,12 +12,12 @@ The scenario-based approach is used for generation of safety-critical scenarios.
 
 Installing Packages
 
-```plaintext
-pip install -r requirements.txt
-```
+  pip install -r requirements.txt
+
 
 ## Usage
 
 ### 1. CSS for logical scenario
 
 After the logical scenarios are created or programmed in the framework of CarMaker or MORAI SIM (i.e., XOSC), create a common scenario schema (CSS) corresponding to the scenario database. 
+
