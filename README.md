@@ -55,6 +55,25 @@ save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI P
 Create a schema for database with the generated raw parameter space.
 The code for generating the schema is ```css_for_RawPS.py```.
 
+### 4. CSS for road (Code)
+This is the code that populates the schema with road information relevant to the scenario generation. 
+The code for adding this information is ```css_for_road.py```.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
