@@ -44,3 +44,13 @@ save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI P
 
 ########################################################
 ```
+
+### 2. Generation of raw parameter space
+
+asd
+
+
+
+
+
+
