@@ -60,8 +60,9 @@ This is the code that populates the schema with road information relevant to the
 The code for adding this information is ```css_for_road.py```.
 
 ### 5. Selection of parameter space (Code)
+This section explores the logical scenarios stored in the database to create detailed scenarios and automate simulations according to the single parameter distribution method defined by OpenSCENARIO. 
 
-
+The simulator consists of MORAI and CarMaker, and in the case of MORAI, a detailed scenario is created in the form of xosc and the simulation is executed, and in the case of CarMaker, a parameter space (.csv) is created and used as an input for the simulation. 
 
 
 
