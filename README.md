@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/ac7b097b-e8bc-4ff0-8ce4-5c22fdb7daf3)# Common-Scenario-Schema
+# Common-Scenario-Schema
 
 The scenario-based approach is used for generation of safety-critical scenarios. It is applied for various applications ranging from development of perception and decision algorithms to the corresponding test and validation.
 
