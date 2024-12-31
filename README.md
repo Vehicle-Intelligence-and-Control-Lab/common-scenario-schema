@@ -1,4 +1,4 @@
-# Common-Scenario-Schema
+![image](https://github.com/user-attachments/assets/ac7b097b-e8bc-4ff0-8ce4-5c22fdb7daf3)# Common-Scenario-Schema
 
 The scenario-based approach is used for generation of safety-critical scenarios. It is applied for various applications ranging from development of perception and decision algorithms to the corresponding test and validation.
 
@@ -62,7 +62,8 @@ The code for adding this information is ```css_for_road.py```.
 ### 5. Selection of parameter space (Code)
 This section explores the logical scenarios stored in the database to create detailed scenarios and automate simulations according to the single parameter distribution method defined by OpenSCENARIO. 
 
-The simulator consists of MORAI and CarMaker, and in the case of MORAI, a detailed scenario is created in the form of xosc and the simulation is executed, and in the case of CarMaker, a parameter space (.csv) is created and used as an input for the simulation. 
+The simulator consists of MORAI SIM and CarMaker, and in the case of MORAI SIM, a detailed scenario is created in the form of xosc and the simulation is executed, and in the case of CarMaker, a parameter space(.csv) is created and used as an input for the simulation. 
+
 
 
 
