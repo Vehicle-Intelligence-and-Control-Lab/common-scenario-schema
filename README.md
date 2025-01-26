@@ -32,7 +32,7 @@ pip install -r requirements.txt
 ### S2/S3
 ![image (9)](https://github.com/user-attachments/assets/30a068cd-99a2-4cbd-a404-a294aeb8565d)
 
-### 1. CSS for logical scenario (Code)
+#### 1. CSS for logical scenario (Code)
 After the logical scenarios are created or programmed in the framework of CarMaker or MORAI SIM (i.e., XOSC), create a common scenario schema (CSS) corresponding to the scenario database. 
 The schema code for databasing logical scenarios created with MORAI is ```css_for_xosc.py```.
 
