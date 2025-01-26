@@ -34,8 +34,10 @@ pip install -r requirements.txt
 
 #### A.1. Generation of logical scenario (Manual)
 Logical scenarios are defined as knowledge-based, data-driven (FOT), and scenario augmentation processes. To implement the defined logical scenarios in a file, you must create a file for your simulator.
-- xosc : MORAI 
-- testrun : carmaker
+
+File extensions to create
+- xosc (MORAI) 
+- testrun (carmaker)
 
 #### A.2. CSS for logical scenario (Code)
 After the logical scenarios are created or programmed in the framework of CarMaker or MORAI SIM (i.e., XOSC), create a common scenario schema (CSS) corresponding to the scenario database. 
