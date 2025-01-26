@@ -14,14 +14,14 @@ The scenario-based approach is used for generation of safety-critical scenarios.
 
 Installing Packages
 
-- scipy
-- h5py
-- pandas
-- colorama
-- tqdm
-- natsort
-- openpyxl
-- pymongo
+- scipy >= 1.14.0
+- h5py >= 3.12.1
+- pandas >= 2.2.2
+- colorama >= 0.4.6
+- tqdm >= 4.66.4
+- natsort >= 8.4.0
+- openpyxl >= 3.1.5
+- pymongo >= 4.8.0
 
 ```Python
 pip install -r requirements.txt
