@@ -69,7 +69,7 @@ save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SO
 ```
 
 #### A.3. Generation of raw parameter space (Manual)
-raw parameter space file name to create
+Raw parameter space file name to create
 - rawPS: Parameter ranges defined by expert knowledge
 - rawPS_Dim: Adding the parameter dimension of an existing scenario
 - rawPS_Extend: Extending parameter ranges for existing scenarios
@@ -98,7 +98,7 @@ The simulator consists of MORAI SIM and CarMaker, and in the case of MORAI SIM, 
 
 we first create detailed scenarios and output the csv file and xosc file. Then, the detailed scenarios are executed in each simulator to output the simulation result file and GT file.
 
-output
+Output
 - carmaker : sim result(.mat), GT(.mat)
 
 
