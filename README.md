@@ -49,8 +49,8 @@ i = 12                           # 생성할 Logical scenario 번호 (single tog
 multiple_toggle =0             # 1:ON  0:OFF
 
 # File path
-registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\Registration"
-save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\Json"
+registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Registration"
+save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Json"
 
 ########################################################
 ```
