@@ -30,7 +30,7 @@ pip install -r requirements.txt
 ## Usage
 
 ### A. S2/S3
-![image (9)](https://github.com/user-attachments/assets/30a068cd-99a2-4cbd-a404-a294aeb8565d)
+![image (12)](https://github.com/user-attachments/assets/93f01dcf-969f-4a4f-ac1b-01f9b1e6285b)
 
 
 #### A.1. Generation of logical scenario (Manual)
@@ -88,7 +88,7 @@ The code for adding this information is ```css_for_road.py```.
 The output of the code is a JSON file.
 
 ### B. S3/S4/S5
-![image (11)](https://github.com/user-attachments/assets/da4818ec-8448-497d-abf5-470111390e79)
+![image (13)](https://github.com/user-attachments/assets/0d188135-c163-4162-b45a-d84d04701418)
 
 
 #### B.1. Selection of parameter space & test automation (Code)
