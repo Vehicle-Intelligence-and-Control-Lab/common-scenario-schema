@@ -27,8 +27,8 @@ i = 12                           # 생성할 Logical scenario 번호 (single tog
 multiple_toggle =0             # 1:ON  0:OFF
 
 # 파일 경로
-registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\Registration"
-save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\Json"
+registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Registration"
+save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Json"
 
 ########################################################
 
@@ -161,7 +161,7 @@ if __name__ == "__main__":
 
     # Logical scenario catalog
     if TESTBED == 1:   
-        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\openscenario\V_RHT_HighwayJunction_1"
+        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\openscenario\V_RHT_HighwayJunction_1"
         simulation_datas = ["Backing",                       # 0 
                             "DoubleParked",                  # 1
                             "EndofTrafficJam",               # 2
@@ -180,7 +180,7 @@ if __name__ == "__main__":
                             "UnprotectedLeftTurn"            # 15
                             ]
     elif SOTIF_1st == 1:                    
-        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\openscenario\V_RHT_HighwayJunction_1"    
+        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\openscenario\V_RHT_HighwayJunction_1"    
         simulation_datas = ["decVehInAnAdjLane",             # 0
                             "LCL_LF_ST",                     # 1
                             "LCR_LF_ST",                     # 2
@@ -194,7 +194,7 @@ if __name__ == "__main__":
                             "overReliance"                   # 10
                             ]
     elif SOTIF_2nd == 1:
-        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\openscenario\V_RHT_Suburb_02"    
+        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\openscenario\V_RHT_Suburb_02"    
         simulation_datas = ["LK_LFL2R_IN",                      # 0
                             "LK_LFR2L_IN",                      # 1
                             "LK_LTOD2R_IN",                     # 2
@@ -217,7 +217,7 @@ if __name__ == "__main__":
                             "nonSignaledIntersection",          # 19
                             ]
     elif SOTIF_3rd == 1:
-        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\openscenario\V_RHT_HighwayJunction_1"    
+        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\openscenario\V_RHT_HighwayJunction_1"    
         simulation_datas = ["drivingAlone",                     # 0
                             ]
     

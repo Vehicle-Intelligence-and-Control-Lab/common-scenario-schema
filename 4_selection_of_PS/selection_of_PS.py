@@ -18,7 +18,7 @@ import shutil
 
 
 #-------------Setting--------------------------------------------------
-num_of_concrete =3200
+num_of_concrete =10
 sampling_num = 6
 query = {
   "$and": [
@@ -55,7 +55,7 @@ query = {
 
 
 # 시뮬레이션 활성화
-toggle_run_simulation = 0  # 1: 활성화, 0: 비활성화
+toggle_run_simulation = 1  # 1: 활성화, 0: 비활성화
 
 
 # CarMaker 시뮬레이션 설정
@@ -109,16 +109,16 @@ for rawPS_doc in rawPS_result:
     # Generate linear spacing PS
     linear_spacing_PS = GenParam(rawPS_df, sampling_num, 'linear').param_table
     if data_type == 'xosc':
-        linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\SOTIF Catalogue\\MORAI Project\\PS\\{logical_scenario}\\{folder_date}'
+        linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\MORAI Project\\PS\\{logical_scenario}\\{folder_date}'
         if not os.path.isdir(linear_spacing_PS_dir):
             os.makedirs(linear_spacing_PS_dir)
         linear_spacing_PS_path = os.path.join(linear_spacing_PS_dir,f'{logical_scenario}_LSPS.csv')
         linear_spacing_PS.to_csv(linear_spacing_PS_path, index=False)
     elif data_type == 'testrun':
         if 'Augmented' in logical_path:
-            linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\SOTIF Catalogue for Augmented\\PS\\{logical_scenario}\\{folder_date}'
+            linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\PS\\{logical_scenario}\\{folder_date}'
         elif 'IDM' in logical_path:
-            linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\SOTIF Catalogue for IDM\\PS\\{logical_scenario}\\{folder_date}'
+            linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for IDM\\PS\\{logical_scenario}\\{folder_date}'
         else:
             linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Car to Car\\PS\\{logical_scenario}\\{folder_date}'
         if not os.path.isdir(linear_spacing_PS_dir):
@@ -133,13 +133,13 @@ for rawPS_doc in rawPS_result:
         pass
     else:
         if data_type == 'xosc':
-            reducing_PS_path = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\SOTIF Catalogue\\MORAI Project\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
+            reducing_PS_path = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\MORAI Project\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
             reducing_PS.to_csv(reducing_PS_path, index=False)
         elif data_type == 'testrun':
             if 'Augmented' in logical_path:
-                reducing_PS_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\SOTIF Catalogue for Augmented\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
+                reducing_PS_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
             elif 'IDM' in logical_path:
-                reducing_PS_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\SOTIF Catalogue for IDM\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
+                reducing_PS_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for IDM\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
             else:
                 reducing_PS_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Car to Car\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
             reducing_PS.to_csv(reducing_PS_path, index=False)
@@ -151,17 +151,17 @@ for rawPS_doc in rawPS_result:
     else:
         sampled_PS = SampleParam(linear_spacing_PS, num_of_concrete).sampled_param_table
     if data_type == 'xosc':
-        sampled_json_path = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\SOTIF Catalogue\\MORAI Project\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
-        sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\SOTIF Catalogue\\MORAI Project\\PS\\{logical_scenario}\\{folder_date}'
+        sampled_json_path = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\MORAI Project\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
+        sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\MORAI Project\\PS\\{logical_scenario}\\{folder_date}'
         sampled_PS_path = os.path.join(sampled_PS_dir, f'{logical_scenario}_SPS.csv')
         sampled_PS.to_csv(sampled_PS_path, index=False)
     elif data_type == 'testrun':
         if 'Augmented' in logical_path:
-            sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\SOTIF Catalogue for Augmented\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
-            sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\SOTIF Catalogue for Augmented\\PS\\{logical_scenario}\\{folder_date}'
+            sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
+            sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\PS\\{logical_scenario}\\{folder_date}'
         elif 'IDM' in logical_path:
-            sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\SOTIF Catalogue for Augmented\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
-            sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\SOTIF Catalogue for IDM\\PS\\{logical_scenario}\\{folder_date}'
+            sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
+            sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for IDM\\PS\\{logical_scenario}\\{folder_date}'
         else:
             sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Car to Car\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
             sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Car to Car\\PS\\{logical_scenario}\\{folder_date}'

@@ -54,7 +54,7 @@ def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
         if os.path.isdir(tmp_save_dir) == False:
             os.makedirs(tmp_save_dir)
             
-        path = './Configs/schema_v1.1.json'
+        path = './configs/schema_v1.1.json'
         css = read_json(path)
         tmp_PS_dir = os.listdir(raw_PS_dir)
         raw_file = [file for file in tmp_PS_dir if 'raw' in file]
@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
     # Logical scenario catalog
     if TESTBED == 1:
-        PS_dir =r"D:\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\PS"
+        PS_dir =r"D:\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\PS"
         simulation_datas = ["Backing",                       # 0 
                             "DoubleParked",                  # 1
                             "EndofTrafficJam",               # 2
@@ -150,7 +150,7 @@ if __name__ == "__main__":
                             ]
     elif SOTIF == 1:      
         if simulator == 0:
-            PS_dir =r"\\192.168.75.251\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\PS"             
+            PS_dir =r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\PS"             
         elif simulator == 1:
             PS_dir =r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Car to Car\PS"
 

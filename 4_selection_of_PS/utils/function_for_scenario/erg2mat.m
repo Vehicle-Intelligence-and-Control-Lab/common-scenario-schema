@@ -1,11 +1,12 @@
-function erg2mat(cur_scenario_selection,variable_array,save_path)
+function erg2mat(cur_scenario_selection,variable_array,erg_path,save_path)
 %% ERG 2 MAT %%
 %%%%%%%%%%%%%%%%%
 % Data_Path
 % Variable_array
 % cur_scenario_selection
 
-cd(save_path)
+cd(erg_path)
+% cd(save_path)
 data_num = length(variable_array(:,1));
 
 for data_index  = 1: data_num
