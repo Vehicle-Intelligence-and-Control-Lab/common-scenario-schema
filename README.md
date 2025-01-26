@@ -88,7 +88,7 @@ The code for adding this information is ```css_for_road.py```.
 The output of the code is a JSON file.
 
 ### B. S3/S4/S5
-![image (13)](https://github.com/user-attachments/assets/0d188135-c163-4162-b45a-d84d04701418)
+![image (14)](https://github.com/user-attachments/assets/8f9190d4-5761-489e-80b2-3764e335c660)
 
 
 #### B.1. Selection of parameter space & test automation (Code)
