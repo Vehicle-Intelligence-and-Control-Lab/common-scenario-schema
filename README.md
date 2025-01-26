@@ -32,7 +32,12 @@ pip install -r requirements.txt
 ### A. S2/S3
 ![image (9)](https://github.com/user-attachments/assets/30a068cd-99a2-4cbd-a404-a294aeb8565d)
 
-#### A.1. CSS for logical scenario (Code)
+#### A.1. Generation of logical scenario (Manual)
+Logical scenarios are defined as knowledge-based, data-driven (FOT), and scenario augmentation processes. To implement the defined logical scenarios in a file, you must create a file for your simulator.
+- xosc : MORAI 
+- testrun : carmaker
+
+#### A.2. CSS for logical scenario (Code)
 After the logical scenarios are created or programmed in the framework of CarMaker or MORAI SIM (i.e., XOSC), create a common scenario schema (CSS) corresponding to the scenario database. 
 The schema code for databasing logical scenarios created with MORAI is ```css_for_xosc.py```.
 
@@ -58,22 +63,22 @@ save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SO
 ########################################################
 ```
 
-#### A.2. Generation of raw parameter space (Manual)
+#### A.3. Generation of raw parameter space (Manual)
 - rawPS: Parameter ranges defined by expert knowledge
 - rawPS_Dim: Adding the parameter dimension of an existing scenario
 - rawPS_Extend: Extending parameter ranges for existing scenarios
 - rawPS_Geometry: Changing road terrain in an existing scenario
 - rawPS_New: Defining scenario parameters at the wrong point in time for a non-existent algorithm in an existing scenario catalog
 
-#### A.3. CSS for raw parameter space (Code)
+#### A.4. CSS for raw parameter space (Code)
 Create a schema for database with the generated raw parameter space.
 The code for generating the schema is ```css_for_RawPS.py```.
 
-#### A.4. CSS for road (Code)
+#### A.5. CSS for road (Code)
 This is the code that populates the schema with road information relevant to the scenario generation. 
 The code for adding this information is ```css_for_road.py```.
 
-### S3/S4/S5
+### B. S3/S4/S5
 ![image (11)](https://github.com/user-attachments/assets/da4818ec-8448-497d-abf5-470111390e79)
 
 #### B.1. Selection of parameter space (Code)
