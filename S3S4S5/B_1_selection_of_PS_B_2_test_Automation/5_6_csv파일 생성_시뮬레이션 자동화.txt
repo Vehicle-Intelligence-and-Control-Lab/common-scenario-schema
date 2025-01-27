@@ -1,0 +1,9 @@
+5. 상세 시나리오 생성
+- MORAI : csv 안에 n개의 상세 시나리오 생성, n개의 xosc 파일 생성
+- carmaker : csv 안에 n개의 상세 시나리오 생성
+
+6. 시뮬레이션 자동화
+- MORAI : xosc를 입력으로 받아 n개의 상세 시나리오 테스트 자동화 구현 예정
+- carmaker : 
+csv, testrun, road를 입력으로 받아 n개의 상세 시나리오 테스트 자동화 구현
+ 
