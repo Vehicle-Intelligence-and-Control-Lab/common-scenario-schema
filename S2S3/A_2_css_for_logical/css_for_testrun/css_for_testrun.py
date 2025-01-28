@@ -10,46 +10,85 @@ import glob
 from Utils.schema_for_carmaker_1_1 import *
 import natsort
 from pathlib import Path
-
+from pymongo import MongoClient
 
 
 ##################### Setting ##########################
 
 # 생성할 Logical scenario catalog
-SOTIF = 1
-AES = 0
+SOTIF_3rd = 1
+IDM = 0
+Precrash_scenario_car_to_car = 0
+Precrash_scenario_car_to_VRU = 0
+
 # Logical scenario 생성 토글
 single_toggle = 0              # 1:ON  0:OFF
-i = 11                          # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
+i = 0                          # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
 
 multiple_toggle = 1             # 1:ON  0:OFF
 
 # 파일 경로
-# registration_dir = r"D:\Shares\MORAI Scenario Data\SOTIF Catalogue\MORAI Project\Registration"
-save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Car to Car\Json"
+registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Registration"
+
+if SOTIF_3rd:
+    save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Augmented\Json"
+elif IDM:
+    save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for IDM\Json"
+elif Precrash_scenario_car_to_car:
+    save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for car to car\Json"
+elif Precrash_scenario_car_to_VRU:
+    save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for car to VRU\Json"   
+
+# MongoDB 연결 설정
+client = MongoClient('mongodb://192.168.75.251:27017/')
+if SOTIF_3rd or IDM:
+    db = client['SOTIF']
+    collection = db['logicalScenario']  # 업로드할 컬렉션 이름 설정
+elif Precrash_scenario_car_to_VRU or Precrash_scenario_car_to_car:
+    db = client['METIS']
+    collection = db['Scenario']
+
 
 ########################################################
 
 
+def upload_to_mongodb(json_file_path):
+    """MongoDB에 JSON 파일 업로드"""
+    with open(json_file_path, 'r', encoding='utf-8') as file:
+        json_data = json.load(file)
 
-# def make_CSS(testrun_dir, simulation_name, registration_dir, save_dir):
-def make_CSS(testrun_dir, simulation_name, save_dir):
+    # 중복 확인 (admin.filePath.raw 기준)
+    check_query = {"admin.filePath.raw": json_data["admin"]["filePath"]["raw"]}
+    existing_document = collection.find_one(check_query)
+    
+    if existing_document:
+        print(f"[중복] 이미 존재하는 문서: {existing_document['_id']}")
+    else:
+        result = collection.insert_one(json_data)
+        print(f"[업로드 성공] MongoDB Document ID: {result.inserted_id}")
+
+
+def make_CSS(testrun_dir, simulation_name, registration_dir, save_dir):
         
-    path = './Configs/schema_v1.1.json'
+    path = './S2S3/A_2_css_for_logical/css_for_testrun/Configs/schema_v1.1.json'
+    # path = './Configs/schema_v1.1.json'
     css = read_json(path)
     
     file_name = simulation_name + ".json"
     file_path = os.path.join(save_dir, file_name)
 
-    # tmk = Makejson(testrun_dir, registration_dir, simulation_name)
-    tmk = Makejson(testrun_dir, simulation_name)
-
+    tmk = Makejson(testrun_dir, registration_dir, simulation_name)
     
     #admin
     css['admin']['filePath']['raw'] = tmk.testrun_file_path.replace('D:', '\\\\192.168.75.251')
     css['admin']['filePath']['exported'] = " "
-    # css['admin']['filePath']['registration'] = registration_dir.replace('D:', '\\\\192.168.75.251')
-    css['admin']['filePath']['registration'] = ""
+    # registration_dir 확인 및 설정
+    if os.path.exists(registration_dir):
+        css['admin']['filePath']['registration'] = registration_dir.replace('D:', '\\\\192.168.75.251')
+    else:
+        css['admin']['filePath']['registration'] = " "
+        print(f"[경고] Registration 디렉터리가 존재하지 않습니다: {registration_dir}") # registration 값 설정하지 않음
+
     css['admin']['filePath']['perception']['LDT'] = " " 
     css['admin']['filePath']['perception']['SF'] = " "
     css['admin']['filePath']['perception']['recognition'] = " "
@@ -79,10 +118,10 @@ def make_CSS(testrun_dir, simulation_name, save_dir):
     
     #scenarios
     css['scenarios']['dataSources']['expertKnowledge'] = []
-    # for expert in tmk.expertKnowledge:
-    #     css['scenarios']['dataSources']['expertKnowledge'].append(
-    #         expert
-    # )
+    for expert in tmk.expertKnowledge:
+        css['scenarios']['dataSources']['expertKnowledge'].append(
+            expert
+    )
 
 
     css['scenarios']['dataSources']['accidentData'] = []
@@ -133,6 +172,10 @@ def make_CSS(testrun_dir, simulation_name, save_dir):
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(css, file, indent=2, ensure_ascii=False)
 
+    print(f"생성된 JSON 파일 경로: {file_path}")
+
+    # JSON 파일 MongoDB에 업로드
+    upload_to_mongodb(file_path)
     # jsonList = natsort.natsorted(glob.glob(save_dir + '\\*_tmp.json'))
     # tmp=[]
     # for i in range(np.size(jsonList)):
@@ -161,10 +204,31 @@ def make_CSS(testrun_dir, simulation_name, save_dir):
 
 if __name__ == "__main__":
 
-    # Logical scenario catalog
-    
-    if SOTIF == 1:                    
-        testrun_dir=r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Car to Car\CarMaker Project\Data\TestRun"    
+# Logical scenario catalog    
+    if SOTIF_3rd == 1:                    
+        testrun_dir=r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Augmented\Carmaker Project\Data\TestRun"    
+        simulation_datas = ["COR_STP_ST",                    # 0
+                            "drivingAlone_AVL_ST",           # 1
+                            "drivingAlone_FPR_ST",           # 2
+                            "drivingAlone_FVR_ST",           # 3
+                            "drivingAlone_RVL_RAB",          # 4
+                            "LK_CIR_MER_RAB",                # 5
+                            "LK_CIR_ST",                     # 6
+                            "LT_LFL2R_IN",                   # 7
+                            "parking_FCR_ST",                # 8
+                            "UT_LF_ST",                      # 9
+                            ]
+
+    if IDM == 1:                    
+        testrun_dir=r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for IDM\CarMaker Project\Data\TestRun"    
+        simulation_datas = ["LCL_LF_ST_only_IDM",            # 0
+                            "LCR_LF_ST_only_IDM",            # 1
+                            "LK_CIL_CU_only_IDM",            # 2
+                            "LK_CIL_ST_only_IDM",            # 3
+                            ]
+
+    if Precrash_scenario_car_to_car == 1:                    
+        testrun_dir=r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for car to car\CarMaker Project\Data\TestRun"    
         simulation_datas = ["LCL_LF_ST",                     # 0
                             "LCR_LF_ST",                     # 1
                             "LK_BWD_ST",                     # 2
@@ -174,53 +238,34 @@ if __name__ == "__main__":
                             "LK_CIR_CU",                     # 6
                             "LK_CIR_MER",                    # 7
                             "LK_CIR_ST",                     # 8
-                            "LK_COL_STP_SH",                   # 9  
-                            "LK_COL_STP_ST",                      # 10
-                            "LK_COR_STP_CU",                      # 11
-                            "LK_COR_STP_ST",                     # 12
-                            "LK_LF_SH",                     # 13
-                            "LK_LF_ST",                       # 14
-                            "LK_LFL2R_IN",                       # 15
-                            "LK_LFR2L_IN",                       # 16
-                            "LK_LTOD2R_IN",                       # 17
-                            "LK_OVE_CU",                       # 18
-                            "LK_OVE_ST",                       # 19
-                            "LK_RTR2SD_IN",                       # 20
-                            "LK_STP_CU",                      # 21
-                            "LK_STP_ST",                        # 22
-                            "LT_LFL2R_IN",                       # 23
-                            "LT_LFR2L_IN",                       # 24
-                            "LT_OVE_IN",                      # 25
-                            "RT_LFL2R_IN",                       # 26
-                            "UT_LF_ST",                       # 27
-                            "UT_OVE_ST",          # 28
+                            "LK_COL_STP_SH",                 # 9  
+                            "LK_COL_STP_ST",                 # 10
+                            "LK_COR_STP_CU",                 # 11
+                            "LK_COR_STP_ST",                 # 12
+                            "LK_LF_SH",                      # 13
+                            "LK_LF_ST",                      # 14
+                            "LK_LFL2R_IN",                   # 15
+                            "LK_LFR2L_IN",                   # 16
+                            "LK_LTOD2R_IN",                  # 17
+                            "LK_OVE_CU",                     # 18
+                            "LK_OVE_ST",                     # 19
+                            "LK_RTR2SD_IN",                  # 20
+                            "LK_STP_CU",                     # 21
+                            "LK_STP_ST",                     # 22
+                            "LT_LFL2R_IN",                   # 23
+                            "LT_LFR2L_IN",                   # 24
+                            "LT_OVE_IN",                     # 25
+                            "RT_LFL2R_IN",                   # 26
+                            "UT_LF_ST",                      # 27
+                            "UT_OVE_ST",                     # 28
                             ]
 
-    if AES == 1:                    
-        testrun_dir=r"\\192.168.75.251\Shares\AES Scenario Data\Simulation\PSD-17-CM11FB7(1120)\TestRun"    
-        simulation_datas = ["LK_CIL_CU",             # 0
-                            "LK_CIL_SH",                     # 1
-                            "LK_CIL_ST",                     # 2
-                            "LK_CIR_CU",                     # 3
-                            "LK_CIR_MER",                     # 4
-                            "LK_CIR_ST",                 # 5
-                            "LK_COL_STP_SH",                 # 6
-                            "LK_COL_STP_ST",                      # 7
-                            "LK_COR_STP_CU",                     # 8
-                            "LK_COR_STP_ST",                     # 9
-                            "LK_LF_SH",                   # 10  
-                            "LK_LF_ST",                      # 11
-                            "LK_OVE_CU",                      # 12
-                            "LK_OVE_ST",                     # 13
-                            "LK_STP_CU",                     # 14
-                            "LK_STP_ST",                       # 15
-                            ]
+    
     
     # 하나의 시뮬레이션 데이터에 대해 확인할 때 사용
     if single_toggle == 1:
         print(simulation_datas[i] + '.json 생성중...')
-        # make_CSS(testrun_dir, simulation_datas[i], registration_dir, save_dir)
-        make_CSS(testrun_dir, simulation_datas[i], save_dir)
+        make_CSS(testrun_dir, simulation_datas[i], registration_dir, save_dir)
         print(simulation_datas[i] + '.json 완성!!!')
         print('-'*30)
     
@@ -228,8 +273,7 @@ if __name__ == "__main__":
     elif multiple_toggle == 1:   
         for simulation_data in simulation_datas:
             print(simulation_data + '.json 생성중...')
-            # make_CSS(testrun_dir,simulation_data, registration_dir, save_dir)
-            make_CSS(testrun_dir,simulation_data, save_dir)
+            make_CSS(testrun_dir,simulation_data, registration_dir, save_dir)
             print(simulation_data + '.json 완성!!!')
             print('-'*30)
 

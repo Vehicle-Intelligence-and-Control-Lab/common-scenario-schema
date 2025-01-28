@@ -4,6 +4,7 @@ update: 2024.02.27
 description: 
     v01: rawPS에 대한 json 생성 (서도현)
     v02: rawPS에 대한 경로 및 토그 생성 (김승환)
+    v03: rawPS DB에 업로드하는 함수 추가 (임동현)
 """
 
 import json
@@ -17,30 +18,54 @@ import glob
 from utils.utilsForPS_v1_1 import *
 import natsort
 from pathlib import Path
-from datetime import datetime  # 추가
-
+from datetime import datetime
+from pymongo import MongoClient  # 추가
 
 ##################### Setting ##########################
 
 # 생성할 Logical scenario catalog
 TESTBED = 0
-SOTIF = 1
-
-# Simulator
-simulator = 1 # 0: MORAI  1: CarMaker
+SOTIF_morai = 0
+SOTIF_carmaker = 1
+precrash = 0
 
 # Folder date
-folder_date = '123121'
+# folder_date = '060522'
+# folder_date = '123121'
+# folder_date = '123021'
+# folder_date = '073024'
+# folder_date = '103024'
+folder_date = '102124'
+
 
 # Logical scenario 생성 토글
-single_toggle = 1              # 1:ON  0:OFF
-i = 58                           # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
+single_toggle = 0               # 1:ON  0:OFF
+i = 0                           # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
 
-multiple_toggle = 0             # 1:ON  0:OFF
+multiple_toggle = 1             # 1:ON  0:OFF
+
+# MongoDB 연결 설정
+client = MongoClient('mongodb://192.168.75.251:27017/')
+db = client['SOTIF']
+collection = db['parameterSpace']  # 업로드할 컬렉션 이름 설정
 
 ########################################################
 
 
+def upload_to_mongodb(json_file_path):
+    """MongoDB에 JSON 파일 업로드"""
+    with open(json_file_path, 'r', encoding='utf-8') as file:
+        json_data = json.load(file)
+
+    # 중복 확인 (admin.filePath.raw 기준)
+    check_query = {"admin.filePath.raw": json_data["admin"]["filePath"]["raw"]}
+    existing_document = collection.find_one(check_query)
+    
+    if existing_document:
+        print(f"[중복] 이미 존재하는 문서: {existing_document['_id']}")
+    else:
+        result = collection.insert_one(json_data)
+        print(f"[업로드 성공] MongoDB Document ID: {result.inserted_id}")
 
 
 def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
@@ -54,8 +79,10 @@ def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
         if os.path.isdir(tmp_save_dir) == False:
             os.makedirs(tmp_save_dir)
             
-        path = './configs/schema_v1.1.json'
+        path = './S2S3/A_4_css_for_rawPS/configs/schema_v1.1.json'
+        # path = './Configs/schema_v1.1.json'
         css = read_json(path)
+
         tmp_PS_dir = os.listdir(raw_PS_dir)
         raw_file = [file for file in tmp_PS_dir if 'raw' in file]
 
@@ -117,8 +144,14 @@ def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
 
         with open(save_dir, 'w', encoding='utf-8') as file:
             json.dump(css, file, indent=2, ensure_ascii=False)
-        print(scenario_name + '.json 완성!!!')
-        print('-'*30)
+        
+        print(f"생성된 JSON 파일 경로: {save_dir}")
+
+        # JSON 파일 MongoDB에 업로드
+        upload_to_mongodb(save_dir)
+        
+        # print(scenario_name + '.json 완성!!!')
+        # print('-'*30)
 
     else:
         print(Fore.RED + f'{folder_date} 폴더가 존재하지 않습니다.' + Fore.RESET)
@@ -145,90 +178,87 @@ if __name__ == "__main__":
                             "RightTurn",                     # 12
                             "SuddenPedestrianAppear",        # 13
                             "TrafficJam",                    # 14
-                            "UnprotectedLeftTurn"            # 15
+                            "UnprotectedLeftTurn",            # 15
                             "decVehInAnAdjLane",             # 16
                             ]
-    elif SOTIF == 1:      
-        if simulator == 0:
-            PS_dir =r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\PS"             
-        elif simulator == 1:
-            PS_dir =r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Car to Car\PS"
+    elif SOTIF_morai == 1:      
+            PS_dir =r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\PS"
+            simulation_datas = ["decVehInAnAdjLane",         # 0
+                            "LCL_LF_ST",                     # 1
+                            "LCR_LF_ST",                     # 2
+                            "LK_CIL_ST",                     # 3
+                            "LK_CIR_ST",                     # 4
+                            "LK_COL_STP_ST",                 # 5
+                            "LK_COR_STP_ST",                 # 6
+                            "LK_LF_ST",                      # 7
+                            "LK_LFL2R_IN",                   # 8
+                            "LK_LFR2L_IN",                   # 9
+                            "LK_LTOD2R_IN",                  # 10
+                            "LK_LTL2SD_IN",                  # 11
+                            "LK_PCSL_ST",                    # 12
+                            "LK_PCSR_ST",                    # 13
+                            "LK_POCL_ST",                    # 14
+                            "LK_POCR_ST",                    # 15
+                            "LK_PSTP_ST",                    # 16
+                            "LK_PWAL_ST",                    # 17
+                            "LK_PWAR_ST",                    # 18
+                            "LK_STP_ST",                     # 19
+                            "LT_LFL2R_IN",                   # 20
+                            "LT_LFR2L_IN",                   # 21
+                            "LT_OVE_IN",                     # 22
+                            "LT_PCSL_IN",                    # 23
+                            "LT_PCSR_IN",                    # 24
+                            "nonSignaledIntersection",       # 25
+                            "overReliance",                  # 26
+                            "rearCrash",                     # 27
+                            "RT_LFL2R_IN",                   # 28
+                            "RT_PCSL_IN",                    # 29
+                            "RT_PCSR_IN",                    # 30
+                            "drivingAlone",                  # 31
+                            ]
 
-        simulation_datas = ["LCL_LF_ST",                     # 0
-                            "LCR_LF_ST",                     # 1
-                            "LK_CIL_ST",                     # 2
-                            "LK_CIR_ST",                     # 3
-                            "LK_COL_STP_ST",                 # 4
-                            "LK_COR_STP_ST",                 # 5
-                            "LK_LF_ST",                      # 6
-                            "LK_STP_ST",                     # 7
-                            "overReliance",                  # 8
-                            "nonSignaledIntersection",       # 9
-                            "rearCrash",                     # 10
-                            "LK_LFL2R_IN",                   # 11
-                            "LK_LFR2L_IN",                   # 12
-                            "LK_LTOD2R_IN",                  # 13
-                            "LK_LTL2SD_IN",                  # 14
-                            "LK_PCSL_ST",                    # 15
-                            "LK_PCSR_ST",                    # 16
-                            "LK_POCL_ST",                    # 17
-                            "LK_POCR_ST",                    # 18
-                            "LK_PSTP_ST",                    # 19
-                            "LK_PWAL_ST",                    # 20
-                            "LK_PWAR_ST",                    # 21
-                            "LT_LFL2R_IN",                   # 22
-                            "LT_OVE_IN",                     # 23
-                            "LT_PCSL_IN",                    # 24
-                            "LT_PCSR_IN",                    # 25
-                            "RT_LFL2R_IN",                   # 26
-                            "RT_PCSL_IN",                    # 27
-                            "RT_PCSR_IN",                    # 28
-                            "drivingAlone",                  # 29
-                            "decVehInAnAdjLane",             # 30
-                            "LT_LFR2L_IN",                   # 31
-                            "LK_BWD_ST",                     # 32
-                            "LK_CIL_CU",                     # 33
-                            "LK_CIL_SH",                     # 34
-                            "LK_CIL_ST",                     # 35 # preCrash
-                            "LK_CIR_CU",                     # 36 # preCrash
-                            "LK_CIR_MER",                    # 37 # preCrash
-                            "LK_CIR_ST",                     # 38 # preCrash
-                            "LK_COL_STP_SH",                 # 39 # preCrash
-                            "LK_COL_STP_ST",                 # 40 # preCrash
-                            "LK_COR_STP_CU",                 # 41 # preCrash
-                            "LK_COR_STP_ST",                 # 42 # preCrash
-                            "LK_LF_SH",                      # 43 # preCrash
-                            "LK_LF_ST",                      # 44 # preCrash
-                            "LK_LFL2R_IN",                   # 45 # preCrash
-                            "LK_LFR2L_IN",                   # 46 # preCrash
-                            "LK_LTOD2R_IN",                  # 47 # preCrash
-                            "LK_OVE_CU",                     # 48 # preCrash
-                            "LK_OVE_ST",                     # 49 # preCrash
-                            "LK_RTR2SD_IN",                  # 50 # preCrash
-                            "LK_STP_CU",                     # 51 # preCrash
-                            "LK_STP_ST",                     # 52 # preCrash
-                            "LT_LFL2R_IN",                   # 53 # preCrash
-                            "LT_LFR2L_IN",                   # 54 # preCrash
-                            "LT_OVE_IN",                     # 55 # preCrash
-                            "RT_LFL2R_IN",                   # 56 # preCrash
-                            "UT_LF_ST",                      # 57 # preCrash
-                            "UT_OVE_ST",                     # 58 # preCrash
+    elif SOTIF_carmaker == 1:      
+            PS_dir =r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Augmented\PS"
+            simulation_datas = ["COL_STP_ST",                # 0
+                            "drivingAlone_AVL_ST",           # 1
+                            "drivingAlone_FPR_ST",           # 2
+                            "drivingAlone_FVR_ST",           # 3
+                            "drivingAlone_RVL_RAB",          # 4
+                            "LK_CIR_MER_RAB",                # 5
+                            "LK_CIR_ST",                     # 6
+                            "LT_LFL2R_IN",                   # 7
+                            "parking_FCR_ST",                # 8
+                            "UT_LF_ST",                      # 9
+                            ]
+
+    elif precrash == 1:      
+            PS_dir =r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Augmented\PS"
+            simulation_datas = ["COL_STP_ST",                # 0
+                            "drivingAlone_AVL_ST",           # 1
+                            "drivingAlone_FPR_ST",           # 2
+                            "drivingAlone_FVR_ST",           # 3
+                            "drivingAlone_RVL_RAB",          # 4
+                            "LK_CIR_MER_RAB",                # 5
+                            "LK_CIR_ST",                     # 6
+                            "LT_LFL2R_IN",                   # 7
+                            "parking_FCR_ST",                # 8
+                            "UT_LF_ST",                      # 9
                             ]
 
 
     # 하나의 시뮬레이션 데이터에 대해 확인할 때 사용
     if single_toggle == 1:
-        print(simulation_datas[i] + '.json 생성중...')
+        print(simulation_datas[i] + '_rawPS.json 생성중...')
         make_CSS(PS_dir, folder_date, simulation_datas[i])
-        print(simulation_datas[i] + '.json 완성!!!')
+        print(simulation_datas[i] + '_rawPS.json 완성!!!')
         print('-'*30)
     
     # 여러개의 시뮬레이션 데이터에 대해 확인할 때 사용
     elif multiple_toggle == 1:   
         for simulation_data in simulation_datas:
-            print(simulation_data + '.json 생성중...')
+            print(simulation_data + '_rawPS.json 생성중...')
             make_CSS(PS_dir, folder_date, simulation_data)
-
+            print('-'*30)
 
 
 

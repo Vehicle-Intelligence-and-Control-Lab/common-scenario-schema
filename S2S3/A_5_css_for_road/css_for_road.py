@@ -16,7 +16,7 @@ import glob
 from Utils.utilsForRoad import *
 import natsort
 from pathlib import Path
-
+from pymongo import MongoClient
 
 
 ##################### Setting ##########################
@@ -27,10 +27,10 @@ preCrash = 0
 AES_TAAS_PCM = 1
 
 # Logical scenario 생성 토글
-single_toggle = 1              # 1:ON  0:OFF
+single_toggle = 0              # 1:ON  0:OFF
 i = 28                          # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
 
-multiple_toggle = 0             # 1:ON  0:OFF
+multiple_toggle = 1             # 1:ON  0:OFF
 
 # 파일 경로
 if SOTIF == 1:  
@@ -45,14 +45,34 @@ elif AES_TAAS_PCM == 1:
     registration_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Augmented\Registration"
     save_dir = r"\\192.168.75.251\Shares\AES Scenario Data\Simulation\TAAS-PCM\Json\Road"
 
+# MongoDB 연결 설정
+client = MongoClient('mongodb://192.168.75.251:27017/')
+db = client['SOTIF']
+collection = db['road']  # 업로드할 컬렉션 이름 설정
+
 ########################################################
 
+
+def upload_to_mongodb(json_file_path):
+    """MongoDB에 JSON 파일 업로드"""
+    with open(json_file_path, 'r', encoding='utf-8') as file:
+        json_data = json.load(file)
+
+    # 중복 확인 (admin.filePath.raw 기준)
+    check_query = {"admin.filePath.raw": json_data["admin"]["filePath"]["raw"]}
+    existing_document = collection.find_one(check_query)
+    
+    if existing_document:
+        print(f"[중복] 이미 존재하는 문서: {existing_document['_id']}")
+    else:
+        result = collection.insert_one(json_data)
+        print(f"[업로드 성공] MongoDB Document ID: {result.inserted_id}")
 
 
 def make_CSS(xodr_dir, simulation_name, registration_dir, save_dir):
 # def make_CSS(xodr_dir, simulation_name, save_dir):
         
-    path = './Configs/schema_v1.1.json'
+    path = './S2S3/A_5_css_for_road/Configs/schema_v1.1.json'
     css = read_json(path)
     
     file_name = simulation_name + ".json"
@@ -167,6 +187,11 @@ def make_CSS(xodr_dir, simulation_name, registration_dir, save_dir):
 
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(css, file, indent=2, ensure_ascii=False)
+
+    print(f"생성된 JSON 파일 경로: {file_path}")
+
+    # JSON 파일 MongoDB에 업로드
+    upload_to_mongodb(file_path)
 
     # jsonList = natsort.natsorted(glob.glob(save_dir + '\\*_tmp.json'))
     # tmp=[]

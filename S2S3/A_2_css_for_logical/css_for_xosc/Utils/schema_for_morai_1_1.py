@@ -54,15 +54,26 @@ class Makejson():
                 "scenario" : " "
             }
         
-        tmp_expertKnowledge = copy.deepcopy(expertKnowledge_format)        
-        registration_file_name = [file for file in os.listdir(registration_dir) if simulation_name in file][0]
-        registration_file_path = os.path.join(registration_dir, registration_file_name)
-        expertKnowledge_file = pd.read_excel(registration_file_path, sheet_name='expertKnowledge')
-        reference = expertKnowledge_file.iloc[0,1]
-        tmp_expertKnowledge['reference'] = reference
+        filtered_files = [file for file in os.listdir(registration_dir) if simulation_name in file]
+    
+        if not filtered_files:
+            print(f"[경고] '{simulation_name}'와 일치하는 파일이 {registration_dir}에 없습니다.")
+            return expertKnowledge  # 빈 리스트 반환
 
-        expertKnowledge.append(tmp_expertKnowledge)
+        try:                    
+            registration_file_name = [file for file in os.listdir(registration_dir) if simulation_name in file][0]
+            registration_file_path = os.path.join(registration_dir, registration_file_name)
+            expertKnowledge_file = pd.read_excel(registration_file_path, sheet_name='expertKnowledge')
+            
+            reference = expertKnowledge_file.iloc[0,1]
+            tmp_expertKnowledge = copy.deepcopy(expertKnowledge_format)
+            tmp_expertKnowledge['reference'] = reference
+
+            expertKnowledge.append(tmp_expertKnowledge)
         
+        except Exception as e:
+            return expertKnowledge
+    
         return expertKnowledge
     
     def get_scenario(self, simulation_name):
@@ -113,10 +124,19 @@ class Makejson():
         tmp_accidentData = copy.deepcopy(accidentData_format)
         accidentData.append(tmp_accidentData)
 
+        # Registration 파일 필터링
+        filtered_files = [file for file in os.listdir(registration_dir) if simulation_name in file]
+
+        if not filtered_files:
+            print(f"[경고] '{simulation_name}'와 일치하는 파일이 {registration_dir}에 없습니다.")
+            return accidentData
+   
+
         registration_file_name = [file for file in os.listdir(registration_dir) if simulation_name in file][0]
         registration_file_path = os.path.join(registration_dir, registration_file_name)
         xl = pd.ExcelFile(registration_file_path)
         sheet_names = xl.sheet_names
+        
         if 'IGLAD' in sheet_names:
             IGLAD_sheet = pd.read_excel(registration_file_path, sheet_name='IGLAD')
             TAAS_sheet = pd.read_excel(registration_file_path, sheet_name='TAAS')

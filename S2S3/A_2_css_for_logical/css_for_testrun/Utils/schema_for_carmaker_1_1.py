@@ -18,16 +18,19 @@ def read_json(path):
     return data
 
 class Makejson():
- 
-    def __init__(self,_testrun_dir, simulation_name): 
+
+    def __init__(self,_testrun_dir, registration_dir, simulation_name): 
+    # def __init__(self,_testrun_dir, simulation_name): 
+        # self.testrun_file_path, self.testrun_file = self.get_testrun_file(_testrun_dir)
         self.testrun_file_path, self.testrun_file = self.get_testrun_file(_testrun_dir, simulation_name)
         self.parsed_config = self.parse_config(self.testrun_file)
         ### 여기서부터는 수정 필요
         # self.date = self.get_date(self.testrun_file)
         self.dataType = "testrun"
         self.schemaVersion = "1.1"
-        # self.expertKnowledge = self.get_expertKnowledge(registration_dir, simulation_name)
+        self.expertKnowledge = self.get_expertKnowledge(registration_dir, simulation_name)
         self.scenario = self.get_scenario(simulation_name)
+        # self.save_dir = save_dir
         # self.accidentData = self.get_accidentData(_testrun_dir, registration_dir, simulation_name)
         # self.entities = self.get_entities(self.testrun_file_root)
         # self.privates = self.get_privates(self.testrun_file_root)
@@ -69,23 +72,34 @@ class Makejson():
     #     date = root.find('.//FileHeader').get('date')
     #     return date
     
-    # def get_expertKnowledge(self, registration_dir, simulation_name):
-    #     expertKnowledge = []
+    def get_expertKnowledge(self, registration_dir, simulation_name):
+        expertKnowledge = []
         
-    #     expertKnowledge_format = {
-    #             "reference": " ",
-    #             "scenario" : " "
-    #         }
+        expertKnowledge_format = {
+                "reference": " ",
+                "scenario" : " "
+            }
         
-        tmp_expertKnowledge = copy.deepcopy(expertKnowledge_format)        
-        registration_file_name = [file for file in os.listdir(registration_dir) if simulation_name in file][0]
-        registration_file_path = os.path.join(registration_dir, registration_file_name)
-        expertKnowledge_file = pd.read_excel(registration_file_path, sheet_name='expertKnowledge')
-        reference = expertKnowledge_file.iloc[0,1]
-        tmp_expertKnowledge['reference'] = reference
+        filtered_files = [file for file in os.listdir(registration_dir) if simulation_name in file]
+    
+        if not filtered_files:
+            print(f"[경고] '{simulation_name}'와 일치하는 파일이 {registration_dir}에 없습니다.")
+            return expertKnowledge  # 빈 리스트 반환
 
-        expertKnowledge.append(tmp_expertKnowledge)
+        try:                    
+            registration_file_name = [file for file in os.listdir(registration_dir) if simulation_name in file][0]
+            registration_file_path = os.path.join(registration_dir, registration_file_name)
+            expertKnowledge_file = pd.read_excel(registration_file_path, sheet_name='expertKnowledge')
+            
+            reference = expertKnowledge_file.iloc[0,1]
+            tmp_expertKnowledge = copy.deepcopy(expertKnowledge_format)
+            tmp_expertKnowledge['reference'] = reference
+
+            expertKnowledge.append(tmp_expertKnowledge)
         
+        except Exception as e:
+            return expertKnowledge
+    
         return expertKnowledge
     
     def get_scenario(self, simulation_name):

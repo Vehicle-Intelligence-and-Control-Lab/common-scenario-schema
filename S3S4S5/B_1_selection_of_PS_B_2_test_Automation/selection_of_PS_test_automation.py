@@ -24,7 +24,7 @@ query = {
   "$and": [
     {
       "admin.filePath.raw": {
-        "$regex": "drivingAlone_AVL",
+        "$regex": "LK_LFL2R_IN",
         "$options": "i"
       }
     },

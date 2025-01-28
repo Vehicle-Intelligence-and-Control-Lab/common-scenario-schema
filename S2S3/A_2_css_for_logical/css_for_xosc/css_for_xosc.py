@@ -10,7 +10,7 @@ import glob
 from Utils.schema_for_morai_1_1 import *
 import natsort
 from pathlib import Path
-
+from pymongo import MongoClient
 
 ##################### Setting ##########################
 
@@ -21,22 +21,46 @@ SOTIF_2nd = 1
 SOTIF_3rd = 0
 
 # Logical scenario 생성 토글
-single_toggle = 1              # 1:ON  0:OFF
-i = 12                           # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
+single_toggle = 0              # 1:ON  0:OFF
+i = 0                           # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
 
-multiple_toggle =0             # 1:ON  0:OFF
+multiple_toggle =1             # 1:ON  0:OFF
 
 # 파일 경로
 registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Registration"
-save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Json"
+if TESTBED:
+    save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\Json"
+else:
+    save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Json"
+
+# MongoDB 연결 설정
+client = MongoClient('mongodb://192.168.75.251:27017/')
+db = client['SOTIF']
+collection = db['logicalScenario']  # 업로드할 컬렉션 이름 설정
 
 ########################################################
 
 
+def upload_to_mongodb(json_file_path):
+    """MongoDB에 JSON 파일 업로드"""
+    with open(json_file_path, 'r', encoding='utf-8') as file:
+        json_data = json.load(file)
+
+    # 중복 확인 (admin.filePath.raw 기준)
+    check_query = {"admin.filePath.raw": json_data["admin"]["filePath"]["raw"]}
+    existing_document = collection.find_one(check_query)
+    
+    if existing_document:
+        print(f"[중복] 이미 존재하는 문서: {existing_document['_id']}")
+    else:
+        result = collection.insert_one(json_data)
+        print(f"[업로드 성공] MongoDB Document ID: {result.inserted_id}")
+
 
 def make_CSS(xosc_dir, simulation_name, registration_dir, save_dir):
         
-    path = './Configs/schema_v1.1.json'
+    path = './S2S3/A_2_css_for_logical/css_for_xosc/Configs/schema_v1.1.json'
+    # path = './Configs/schema_v1.1.json'
     css = read_json(path)
     
     file_name = simulation_name + ".json"
@@ -47,7 +71,13 @@ def make_CSS(xosc_dir, simulation_name, registration_dir, save_dir):
     #admin
     css['admin']['filePath']['raw'] = tmk.xosc_file_path.replace('D:', '\\\\192.168.75.251')
     css['admin']['filePath']['exported'] = " "
-    css['admin']['filePath']['registration'] = registration_dir.replace('D:', '\\\\192.168.75.251')
+    # registration_dir 확인 및 설정
+    if os.path.exists(registration_dir):
+        css['admin']['filePath']['registration'] = registration_dir.replace('D:', '\\\\192.168.75.251')
+    else:
+        css['admin']['filePath']['registration'] = " "
+        print(f"[경고] Registration 디렉터리가 존재하지 않습니다: {registration_dir}") # registration 값 설정하지 않음
+    
     css['admin']['filePath']['perception']['LDT'] = " " 
     css['admin']['filePath']['perception']['SF'] = " "
     css['admin']['filePath']['perception']['recognition'] = " "
@@ -131,6 +161,10 @@ def make_CSS(xosc_dir, simulation_name, registration_dir, save_dir):
     with open(file_path, 'w', encoding='utf-8') as file:
         json.dump(css, file, indent=2, ensure_ascii=False)
 
+    print(f"생성된 JSON 파일 경로: {file_path}")
+
+    # JSON 파일 MongoDB에 업로드
+    upload_to_mongodb(file_path)
     # jsonList = natsort.natsorted(glob.glob(save_dir + '\\*_tmp.json'))
     # tmp=[]
     # for i in range(np.size(jsonList)):
@@ -161,7 +195,7 @@ if __name__ == "__main__":
 
     # Logical scenario catalog
     if TESTBED == 1:   
-        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\openscenario\V_RHT_HighwayJunction_1"
+        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\openscenario\R_KR_PG_KATRI"
         simulation_datas = ["Backing",                       # 0 
                             "DoubleParked",                  # 1
                             "EndofTrafficJam",               # 2
@@ -177,7 +211,20 @@ if __name__ == "__main__":
                             "RightTurn",                     # 12
                             "SuddenPedestrianAppear",        # 13
                             "TrafficJam",                    # 14
-                            "UnprotectedLeftTurn"            # 15
+                            "UnprotectedLeftTurn",            # 15
+                            "Cut_in",                         # 16
+                            "Cut_Through",                    # 17
+                            "교통신호대응(III)",               # 18
+                            "LK_LFL2R_IN",                    # 19
+                            "LK_LFR2L_IN",                    # 20
+                            "LK_LTOD2R_IN",                   # 21
+                            "LK_RTR2SD_IN",                   # 22
+                            "LT_LFL2R_IN",                    # 23
+                            "LT_LFR2L_IN",                    # 24
+                            "LT_OVE_IN",                      # 25
+                            "Merge",                          # 26
+                            "Overtaking_4th",                 # 27
+                            "RT_LFL2R_IN",                    # 28
                             ]
     elif SOTIF_1st == 1:                    
         xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\openscenario\V_RHT_HighwayJunction_1"    
