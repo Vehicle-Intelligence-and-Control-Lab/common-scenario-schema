@@ -83,8 +83,8 @@ class JSONEncoder(json.JSONEncoder):
 client = MongoClient('mongodb://192.168.75.251:27017/')
 db_sotif = client['SOTIF']
 db_METIS = client['METIS']
-# logical_collection = db_sotif['logicalScenario']
-logical_collection = db_METIS['Scenario']
+logical_collection = db_sotif['logicalScenario']
+# logical_collection = db_METIS['Scenario']
 param_collection = db_sotif['parameterSpace']
 
 
@@ -121,6 +121,8 @@ for rawPS_doc in rawPS_result:
             linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\PS\\{logical_scenario}\\{folder_date}'
         elif 'IDM' in logical_path:
             linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for IDM\\PS\\{logical_scenario}\\{folder_date}'
+        elif 'VRU' in logical_path:
+            linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Precrash Scenario(Car-to-VRU)\\PS\\{logical_scenario}\\{folder_date}'
         else:
             linear_spacing_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Car to Car\\PS\\{logical_scenario}\\{folder_date}'
         if not os.path.isdir(linear_spacing_PS_dir):
@@ -142,6 +144,8 @@ for rawPS_doc in rawPS_result:
                 reducing_PS_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
             elif 'IDM' in logical_path:
                 reducing_PS_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for IDM\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
+            elif 'VRU' in logical_path:
+                reducing_PS_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for IDM\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
             else:
                 reducing_PS_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Car to Car\\PS\\{logical_scenario}\\{folder_date}\\{logical_scenario}_RPS.csv'
             reducing_PS.to_csv(reducing_PS_path, index=False)
@@ -162,8 +166,11 @@ for rawPS_doc in rawPS_result:
             sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
             sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\PS\\{logical_scenario}\\{folder_date}'
         elif 'IDM' in logical_path:
-            sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Augmented\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
+            sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for IDM\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
             sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for IDM\\PS\\{logical_scenario}\\{folder_date}'
+        elif 'VRU' in logical_path:
+            sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Precrash Scenario(Car-to-VRU)\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
+            sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Precrash Scenario(Car-to-VRU)\\PS\\{logical_scenario}\\{folder_date}'
         else:
             sampled_json_path = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Car to Car\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
             sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\Precrash Scenario Data\\Scenario Catalog for Car to Car\\PS\\{logical_scenario}\\{folder_date}'
@@ -224,7 +231,8 @@ for rawPS_doc in rawPS_result:
         elif data_type == 'testrun':
             eng = matlab.engine.start_matlab()
             main_path = str(os.getcwd())
-            matlab_func_path = os.path.join(main_path, 'utils').replace('\\', '/')
+            # matlab_func_path = os.path.join(main_path, 'utils').replace('\\', '/')
+            matlab_func_path = os.path.join(main_path, 'S3S4S5', 'B_1_selection_of_PS_B_2_test_Automation', 'utils').replace('\\', '/')
             eng.addpath(matlab_func_path)
             param_space_path = sampled_PS_path.replace('_SPS', '_Param_Space')
             shutil.copy(sampled_PS_path, param_space_path)

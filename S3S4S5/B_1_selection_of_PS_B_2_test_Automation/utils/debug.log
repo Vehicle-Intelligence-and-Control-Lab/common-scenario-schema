@@ -1,0 +1,4 @@
+[0130/195105.109:ERROR:context.cc(151)] The cache_path directory (C:\Users\PC\AppData\Roaming\MathWorks\MATLAB\R2021a\LightweightBrowser\jcef_cache) could not be created.
+[0130/195105.109:ERROR:context.cc(166)] The cache_path is invalid. Defaulting to in-memory storage.
+[0130/200738.417:ERROR:context.cc(151)] The cache_path directory (C:\Users\PC\AppData\Roaming\MathWorks\MATLAB\R2021a\LightweightBrowser\jcef_cache) could not be created.
+[0130/200738.418:ERROR:context.cc(166)] The cache_path is invalid. Defaulting to in-memory storage.
