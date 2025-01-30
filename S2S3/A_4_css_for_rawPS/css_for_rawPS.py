@@ -24,10 +24,12 @@ from pymongo import MongoClient  # 추가
 ##################### Setting ##########################
 
 # 생성할 Logical scenario catalog
-TESTBED = 0
-SOTIF_morai = 0
-SOTIF_carmaker = 1
-precrash = 0
+MORAI_Sceanrio_Catalog_KATRI = 0
+MORAI_Sceanrio_Catalog_SOTIF = 0
+Precrash_Scenario_Catalog_Augmented = 0
+Precrash_Scenario_Catalog_IDM = 0
+Precrash_Scenario_Catalog_Car_to_Car = 0
+Precrash_Scenario_Catalog_Car_to_VRU = 1
 
 # Folder date
 # folder_date = '060522'
@@ -35,14 +37,16 @@ precrash = 0
 # folder_date = '123021'
 # folder_date = '073024'
 # folder_date = '103024'
-folder_date = '102124'
+# folder_date = '102124'
+# folder_date = '102824'
+folder_date = '013025'
 
 
 # Logical scenario 생성 토글
-single_toggle = 0               # 1:ON  0:OFF
+single_toggle = 1               # 1:ON  0:OFF
 i = 0                           # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
 
-multiple_toggle = 1             # 1:ON  0:OFF
+multiple_toggle = 0             # 1:ON  0:OFF
 
 # MongoDB 연결 설정
 client = MongoClient('mongodb://192.168.75.251:27017/')
@@ -161,7 +165,7 @@ def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
 if __name__ == "__main__":
 
     # Logical scenario catalog
-    if TESTBED == 1:
+    if MORAI_Sceanrio_Catalog_KATRI == 1:
         PS_dir =r"D:\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\PS"
         simulation_datas = ["Backing",                       # 0 
                             "DoubleParked",                  # 1
@@ -179,9 +183,21 @@ if __name__ == "__main__":
                             "SuddenPedestrianAppear",        # 13
                             "TrafficJam",                    # 14
                             "UnprotectedLeftTurn",            # 15
-                            "decVehInAnAdjLane",             # 16
+                            "Cut_in",                         # 16
+                            "Cut_Through",                    # 17
+                            "교통신호대응(III)",               # 18
+                            "LK_LFL2R_IN",                    # 19
+                            "LK_LFR2L_IN",                    # 20
+                            "LK_LTOD2R_IN",                   # 21
+                            "LK_RTR2SD_IN",                   # 22
+                            "LT_LFL2R_IN",                    # 23
+                            "LT_LFR2L_IN",                    # 24
+                            "LT_OVE_IN",                      # 25
+                            "Merge",                          # 26
+                            "Overtaking_4th",                 # 27
+                            "RT_LFL2R_IN",                    # 28
                             ]
-    elif SOTIF_morai == 1:      
+    elif MORAI_Sceanrio_Catalog_SOTIF == 1:      
             PS_dir =r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\PS"
             simulation_datas = ["decVehInAnAdjLane",         # 0
                             "LCL_LF_ST",                     # 1
@@ -191,33 +207,33 @@ if __name__ == "__main__":
                             "LK_COL_STP_ST",                 # 5
                             "LK_COR_STP_ST",                 # 6
                             "LK_LF_ST",                      # 7
-                            "LK_LFL2R_IN",                   # 8
-                            "LK_LFR2L_IN",                   # 9
-                            "LK_LTOD2R_IN",                  # 10
-                            "LK_LTL2SD_IN",                  # 11
-                            "LK_PCSL_ST",                    # 12
-                            "LK_PCSR_ST",                    # 13
-                            "LK_POCL_ST",                    # 14
-                            "LK_POCR_ST",                    # 15
-                            "LK_PSTP_ST",                    # 16
-                            "LK_PWAL_ST",                    # 17
-                            "LK_PWAR_ST",                    # 18
-                            "LK_STP_ST",                     # 19
-                            "LT_LFL2R_IN",                   # 20
-                            "LT_LFR2L_IN",                   # 21
-                            "LT_OVE_IN",                     # 22
-                            "LT_PCSL_IN",                    # 23
-                            "LT_PCSR_IN",                    # 24
-                            "nonSignaledIntersection",       # 25
-                            "overReliance",                  # 26
-                            "rearCrash",                     # 27
-                            "RT_LFL2R_IN",                   # 28
-                            "RT_PCSL_IN",                    # 29
-                            "RT_PCSR_IN",                    # 30
-                            "drivingAlone",                  # 31
+                            "LK_STP_ST",                     # 8
+                            "rearCrash",                     # 9
+                            "overReliance",                  # 10
+                            "drivingAlone",                  # 11
+                            "LK_LFL2R_IN",                      # 12
+                            "LK_LFR2L_IN",                      # 13
+                            "LK_LTOD2R_IN",                     # 14
+                            "LK_LTL2SD_IN",                     # 15
+                            "LK_PCSL_ST",                       # 16
+                            "LK_PCSR_ST",                       # 17
+                            "LK_POCL_ST",                       # 18
+                            "LK_POCR_ST",                       # 19
+                            "LK_PSTP_ST",                       # 20
+                            "LK_PWAL_ST",                       # 21
+                            "LK_PWAR_ST",                       # 22
+                            "LT_LFL2R_IN",                      # 23
+                            "LT_LFR2L_IN",                      # 24
+                            "LT_OVE_IN",                        # 25
+                            "LT_PCSL_IN",                       # 26
+                            "LT_PCSR_IN",                       # 27
+                            "RT_LFL2R_IN",                      # 28
+                            "RT_PCSL_IN",                       # 29
+                            "RT_PCSR_IN",                       # 30
+                            "nonSignaledIntersection",          # 31
                             ]
 
-    elif SOTIF_carmaker == 1:      
+    elif Precrash_Scenario_Catalog_Augmented == 1:      
             PS_dir =r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Augmented\PS"
             simulation_datas = ["COL_STP_ST",                # 0
                             "drivingAlone_AVL_ST",           # 1
@@ -231,18 +247,92 @@ if __name__ == "__main__":
                             "UT_LF_ST",                      # 9
                             ]
 
-    elif precrash == 1:      
-            PS_dir =r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Augmented\PS"
-            simulation_datas = ["COL_STP_ST",                # 0
-                            "drivingAlone_AVL_ST",           # 1
-                            "drivingAlone_FPR_ST",           # 2
-                            "drivingAlone_FVR_ST",           # 3
-                            "drivingAlone_RVL_RAB",          # 4
-                            "LK_CIR_MER_RAB",                # 5
-                            "LK_CIR_ST",                     # 6
-                            "LT_LFL2R_IN",                   # 7
-                            "parking_FCR_ST",                # 8
-                            "UT_LF_ST",                      # 9
+    elif Precrash_Scenario_Catalog_IDM == 1:      
+            PS_dir =r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for IDM\PS"
+            simulation_datas = ["LCL_LF_ST_only_IDM",        # 0
+                            "LCR_LF_ST_only_IDM",            # 1
+                            "LK_CIL_CU_only_IDM",            # 2
+                            "LK_CIL_ST_only_IDM",            # 3
+                            ]
+
+    elif Precrash_Scenario_Catalog_Car_to_Car == 1:      
+            PS_dir =r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Car to Car\PS"
+            simulation_datas = ["LCL_LF_ST",                 # 0
+                            "LCR_LF_ST",                     # 1
+                            "LK_BWD_ST",                     # 2
+                            "LK_CIL_CU",                     # 3
+                            "LK_CIL_SH",                     # 4
+                            "LK_CIL_ST",                     # 5
+                            "LK_CIR_CU",                     # 6
+                            "LK_CIR_MER",                    # 7
+                            "LK_CIR_ST",                     # 8
+                            "LK_COL_STP_SH",                 # 9  
+                            "LK_COL_STP_ST",                 # 10
+                            "LK_COR_STP_CU",                 # 11
+                            "LK_COR_STP_ST",                 # 12
+                            "LK_LF_SH",                      # 13
+                            "LK_LF_ST",                      # 14
+                            "LK_LFL2R_IN",                   # 15
+                            "LK_LFR2L_IN",                   # 16
+                            "LK_LTOD2R_IN",                  # 17
+                            "LK_OVE_CU",                     # 18
+                            "LK_OVE_ST",                     # 19
+                            "LK_RTR2SD_IN",                  # 20
+                            "LK_STP_CU",                     # 21
+                            "LK_STP_ST",                     # 22
+                            "LT_LFL2R_IN",                   # 23
+                            "LT_LFR2L_IN",                   # 24
+                            "LT_OVE_IN",                     # 25
+                            "RT_LFL2R_IN",                   # 26
+                            "UT_LF_ST",                      # 27
+                            "UT_OVE_ST",                     # 28
+                            ]
+
+    elif Precrash_Scenario_Catalog_Car_to_VRU == 1:      
+            PS_dir =r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Precrash Scenario(Car-to-VRU)\PS"
+            simulation_datas = ["LK_CCIR_ST",                # 0
+                            "LK_CCSL_ST",                    # 1
+                            "LK_CCSR_ST",                    # 2
+                            "LK_CGS_ST",                     # 3
+                            "LK_CGSL2R_IN",                  # 4
+                            "LK_CGSR2L_IN",                  # 5
+                            "LK_CIR_CU",                     # 6
+                            "LK_COCL_ST",                    # 7
+                            "LK_CSTP_ST",                    # 8
+                            "LK_ECSL_ST",                    # 9  
+                            "LK_ECSL_STP_ST",                # 10
+                            "LK_EGSL2R_IN",                  # 11
+                            "LK_EGSR2L_IN",                  # 12
+                            "LK_PCSL_ST",                    # 13
+                            "LK_PCSL_STP_ST",                # 14
+                            "LK_PCSR_ST",                    # 15
+                            "LK_PCSR_STP_ST",                # 16
+                            "LK_POCL_ST",                    # 17
+                            "LK_POCR_ST",                    # 18
+                            "LK_PSTP_ST",                    # 19
+                            "LK_PWAL_ST",                    # 20
+                            "LK_PWAR_ST",                    # 21
+                            "LT_CCSL_IN",                    # 22
+                            "LT_CCSR_IN",                    # 23
+                            "LT_CGSR2L_IN",                  # 24
+                            "LT_COC_IN",                     # 25
+                            "LT_ECSL_IN",                    # 26
+                            "LT_EGSR2L_IN",                  # 27
+                            "LT_EOC_IN",                     # 28
+                            "LT_PCSL_IN",                    # 29
+                            "LT_PCSR_IN",                    # 30
+                            "LT_POC_IN",                     # 31
+                            "RT_CCSL_IN",                    # 32
+                            "RT_CCSR_IN",                    # 33
+                            "RT_CGSL2R_IN",                  # 34
+                            "RT_CGSR2L_IN",                  # 35
+                            "RT_CSD_IN",                     # 36
+                            "RT_ECSL_IN",                    # 37
+                            "RT_ECSR_IN",                    # 38
+                            "RT_EGSL2R_IN",                  # 39
+                            "RT_EGSR2L_IN",                  # 40
+                            "RT_PCSL_IN",                    # 41
+                            "RT_PCSR_IN",                    # 42
                             ]
 
 

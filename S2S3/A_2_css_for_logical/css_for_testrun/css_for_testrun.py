@@ -16,37 +16,38 @@ from pymongo import MongoClient
 ##################### Setting ##########################
 
 # 생성할 Logical scenario catalog
-SOTIF_3rd = 1
-IDM = 0
-Precrash_scenario_car_to_car = 0
-Precrash_scenario_car_to_VRU = 0
+
+Precrash_Scenario_Catalog_Augmented = 0
+Precrash_Scenario_Catalog_IDM = 0
+Precrash_Scenario_Catalog_Car_to_Car = 0
+Precrash_Scenario_Catalog_Car_to_VRU = 1
 
 # Logical scenario 생성 토글
-single_toggle = 0              # 1:ON  0:OFF
+single_toggle = 1              # 1:ON  0:OFF
 i = 0                          # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
 
-multiple_toggle = 1             # 1:ON  0:OFF
+multiple_toggle = 0             # 1:ON  0:OFF
 
 # 파일 경로
 registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Registration"
 
-if SOTIF_3rd:
+if Precrash_Scenario_Catalog_Augmented:
     save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Augmented\Json"
-elif IDM:
+elif Precrash_Scenario_Catalog_IDM:
     save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for IDM\Json"
-elif Precrash_scenario_car_to_car:
+elif Precrash_Scenario_Catalog_Car_to_Car:
     save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for car to car\Json"
-elif Precrash_scenario_car_to_VRU:
-    save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for car to VRU\Json"   
+elif Precrash_Scenario_Catalog_Car_to_VRU:
+    save_dir = r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Precrash Scenario(Car-to-VRU)\Json"   
 
 # MongoDB 연결 설정
 client = MongoClient('mongodb://192.168.75.251:27017/')
-if SOTIF_3rd or IDM:
-    db = client['SOTIF']
-    collection = db['logicalScenario']  # 업로드할 컬렉션 이름 설정
-elif Precrash_scenario_car_to_VRU or Precrash_scenario_car_to_car:
-    db = client['METIS']
-    collection = db['Scenario']
+db = client['SOTIF']
+collection = db['logicalScenario']  # 업로드할 컬렉션 이름 설정
+
+# if Precrash_Scenario_Catalog_Car_to_VRU or Precrash_Scenario_Catalog_Car_to_Car:
+#     db = client['METIS']
+#     collection = db['Scenario']
 
 
 ########################################################
@@ -205,7 +206,7 @@ def make_CSS(testrun_dir, simulation_name, registration_dir, save_dir):
 if __name__ == "__main__":
 
 # Logical scenario catalog    
-    if SOTIF_3rd == 1:                    
+    if Precrash_Scenario_Catalog_Augmented == 1:                    
         testrun_dir=r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Augmented\Carmaker Project\Data\TestRun"    
         simulation_datas = ["COR_STP_ST",                    # 0
                             "drivingAlone_AVL_ST",           # 1
@@ -219,7 +220,7 @@ if __name__ == "__main__":
                             "UT_LF_ST",                      # 9
                             ]
 
-    if IDM == 1:                    
+    if Precrash_Scenario_Catalog_IDM == 1:                    
         testrun_dir=r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for IDM\CarMaker Project\Data\TestRun"    
         simulation_datas = ["LCL_LF_ST_only_IDM",            # 0
                             "LCR_LF_ST_only_IDM",            # 1
@@ -227,7 +228,7 @@ if __name__ == "__main__":
                             "LK_CIL_ST_only_IDM",            # 3
                             ]
 
-    if Precrash_scenario_car_to_car == 1:                    
+    if Precrash_Scenario_Catalog_Car_to_Car == 1:                    
         testrun_dir=r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for car to car\CarMaker Project\Data\TestRun"    
         simulation_datas = ["LCL_LF_ST",                     # 0
                             "LCR_LF_ST",                     # 1
@@ -260,7 +261,52 @@ if __name__ == "__main__":
                             "UT_OVE_ST",                     # 28
                             ]
 
-    
+    if Precrash_Scenario_Catalog_Car_to_VRU == 1:
+        testrun_dir=r"\\192.168.75.251\Shares\Precrash Scenario Data\Scenario Catalog for Precrash Scenario(Car-to-VRU)\CarMaker Project\Data\TestRun"    
+        simulation_datas = ["LK_CCIR_ST",                    # 0
+                            "LK_CCSL_ST",                    # 1
+                            "LK_CCSR_ST",                    # 2
+                            "LK_CGS_ST",                     # 3
+                            "LK_CGSL2R_IN",                  # 4
+                            "LK_CGSR2L_IN",                  # 5
+                            "LK_CIR_CU",                     # 6
+                            "LK_COCL_ST",                    # 7
+                            "LK_CSTP_ST",                    # 8
+                            "LK_ECSL_ST",                    # 9  
+                            "LK_ECSL_STP_ST",                # 10
+                            "LK_EGSL2R_IN",                  # 11
+                            "LK_EGSR2L_IN",                  # 12
+                            "LK_PCSL_ST",                    # 13
+                            "LK_PCSL_STP_ST",                # 14
+                            "LK_PCSR_ST",                    # 15
+                            "LK_PCSR_STP_ST",                # 16
+                            "LK_POCL_ST",                    # 17
+                            "LK_POCR_ST",                    # 18
+                            "LK_PSTP_ST",                    # 19
+                            "LK_PWAL_ST",                    # 20
+                            "LK_PWAR_ST",                    # 21
+                            "LT_CCSL_IN",                    # 22
+                            "LT_CCSR_IN",                    # 23
+                            "LT_CGSR2L_IN",                  # 24
+                            "LT_COC_IN",                     # 25
+                            "LT_ECSL_IN",                    # 26
+                            "LT_EGSR2L_IN",                  # 27
+                            "LT_EOC_IN",                     # 28
+                            "LT_PCSL_IN",                    # 29
+                            "LT_PCSR_IN",                    # 30
+                            "LT_POC_IN",                     # 31
+                            "RT_CCSL_IN",                    # 32
+                            "RT_CCSR_IN",                    # 33
+                            "RT_CGSL2R_IN",                  # 34
+                            "RT_CGSR2L_IN",                  # 35
+                            "RT_CSD_IN",                     # 36
+                            "RT_ECSL_IN",                    # 37
+                            "RT_ECSR_IN",                    # 38
+                            "RT_EGSL2R_IN",                  # 39
+                            "RT_EGSR2L_IN",                  # 40
+                            "RT_PCSL_IN",                    # 41
+                            "RT_PCSR_IN",                    # 42
+                            ]
     
     # 하나의 시뮬레이션 데이터에 대해 확인할 때 사용
     if single_toggle == 1:

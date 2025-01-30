@@ -15,10 +15,11 @@ from pymongo import MongoClient
 ##################### Setting ##########################
 
 # 생성할 Logical scenario catalog
-TESTBED = 0
-SOTIF_1st = 0
-SOTIF_2nd = 1
-SOTIF_3rd = 0
+MORAI_Sceanrio_Catalog_KATRI = 0
+MORAI_Sceanrio_Catalog_SOTIF = 1
+
+# MORAI_Sceanrio_Catalog_SOTIF의 map name
+SOTIF_map = 0                        ## 0 : V_RHT_HighwayJunction_1, 1 : V_RHT_Suburb_02
 
 # Logical scenario 생성 토글
 single_toggle = 0              # 1:ON  0:OFF
@@ -28,7 +29,7 @@ multiple_toggle =1             # 1:ON  0:OFF
 
 # 파일 경로
 registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Registration"
-if TESTBED:
+if MORAI_Sceanrio_Catalog_KATRI:
     save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\Json"
 else:
     save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Json"
@@ -194,7 +195,7 @@ def make_CSS(xosc_dir, simulation_name, registration_dir, save_dir):
 if __name__ == "__main__":
 
     # Logical scenario catalog
-    if TESTBED == 1:   
+    if MORAI_Sceanrio_Catalog_KATRI == 1:   
         xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\openscenario\R_KR_PG_KATRI"
         simulation_datas = ["Backing",                       # 0 
                             "DoubleParked",                  # 1
@@ -226,9 +227,10 @@ if __name__ == "__main__":
                             "Overtaking_4th",                 # 27
                             "RT_LFL2R_IN",                    # 28
                             ]
-    elif SOTIF_1st == 1:                    
-        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\openscenario\V_RHT_HighwayJunction_1"    
-        simulation_datas = ["decVehInAnAdjLane",             # 0
+    elif MORAI_Sceanrio_Catalog_SOTIF == 1:         
+        if SOTIF_map == 0:    ## V_RHT_HighwayJunction_1
+            xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\openscenario\V_RHT_HighwayJunction_1"    
+            simulation_datas = ["decVehInAnAdjLane",             # 0
                             "LCL_LF_ST",                     # 1
                             "LCR_LF_ST",                     # 2
                             "LK_CIL_ST",                     # 3
@@ -238,11 +240,12 @@ if __name__ == "__main__":
                             "LK_LF_ST",                      # 7
                             "LK_STP_ST",                     # 8
                             "rearCrash",                     # 9
-                            "overReliance"                   # 10
+                            "overReliance",                  # 10
+                            "drivingAlone",                  # 11
                             ]
-    elif SOTIF_2nd == 1:
-        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\openscenario\V_RHT_Suburb_02"    
-        simulation_datas = ["LK_LFL2R_IN",                      # 0
+        elif SOTIF_map == 1:    ## V_RHT_Suburb_02
+            xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\openscenario\V_RHT_Suburb_02"    
+            simulation_datas = ["LK_LFL2R_IN",                      # 0
                             "LK_LFR2L_IN",                      # 1
                             "LK_LTOD2R_IN",                     # 2
                             "LK_LTL2SD_IN",                     # 3
@@ -263,11 +266,7 @@ if __name__ == "__main__":
                             "RT_PCSR_IN",                       # 18
                             "nonSignaledIntersection",          # 19
                             ]
-    elif SOTIF_3rd == 1:
-        xosc_dir=r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\openscenario\V_RHT_HighwayJunction_1"    
-        simulation_datas = ["drivingAlone",                     # 0
-                            ]
-    
+        
     # 하나의 시뮬레이션 데이터에 대해 확인할 때 사용
     if single_toggle == 1:
         print(simulation_datas[i] + '.json 생성중...')

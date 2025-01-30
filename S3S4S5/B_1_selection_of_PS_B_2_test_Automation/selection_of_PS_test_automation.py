@@ -24,7 +24,7 @@ query = {
   "$and": [
     {
       "admin.filePath.raw": {
-        "$regex": "LK_LFL2R_IN",
+        "$regex": "LK_CCIR_ST",
         "$options": "i"
       }
     },
@@ -62,7 +62,7 @@ toggle_run_simulation = 1  # 1: 활성화, 0: 비활성화
 toggle_IDM = 0
 toggle_testAutomation = 1
 toggle_erg2mat = 1
-toggle_genCollisionGT = 0  # 1: 활성화, 0: 비활성화
+toggle_genCollisionGT = 1  # 1: 활성화, 0: 비활성화
 toggle_genCAGT = 0
 toggle_movie_export = 0
 
@@ -81,9 +81,11 @@ class JSONEncoder(json.JSONEncoder):
 
 # Connection to the mongoDB
 client = MongoClient('mongodb://192.168.75.251:27017/')
-db = client['SOTIF']
-logical_collection = db['logicalScenario']
-param_collection = db['parameterSpace']
+db_sotif = client['SOTIF']
+db_METIS = client['METIS']
+# logical_collection = db_sotif['logicalScenario']
+logical_collection = db_METIS['Scenario']
+param_collection = db_sotif['parameterSpace']
 
 
 logical_result = logical_collection.find(query)
