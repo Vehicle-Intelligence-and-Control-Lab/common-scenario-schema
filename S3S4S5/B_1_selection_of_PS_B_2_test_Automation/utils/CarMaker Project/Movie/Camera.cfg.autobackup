@@ -1,0 +1,17 @@
+#INFOFILE1.1 - Do not remove this line!
+FileIdent = IPGMovie-Camera 7
+FileCreator = IPGMovie 9.0.2 2020-8-5
+
+Camera.0.Name = Evaluation
+Camera.0.Mode = FixedToBodyA
+Camera.0.AttachedTo = 0
+Camera.0.Type = 0
+Camera.0.Lens = direct
+Camera.0.FlipMode = n
+Camera.0.SrcHDR16 = 0
+Camera.0.Pos = 2.300 0.0 1.0
+Camera.0.dist = 30
+Camera.0.rot = 0.0 90 0
+Camera.0.FieldOfView = 54.6
+Camera.0.DistortionFile =
+Camera.0.ToneMappingFile =

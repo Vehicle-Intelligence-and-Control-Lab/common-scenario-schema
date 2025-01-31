@@ -1,0 +1,649 @@
+#INFOFILE1.1 - Do not remove this line!
+FileIdent = CarMaker-TestRun 9
+FileCreator = CarMaker 9.0.2 2020-8-5
+Description:
+Vehicle = BMW_5_IPG_Scenario_AEB_Nearest_Path_1
+Trailer =
+Tire.0 =
+Tire.1 =
+Tire.2 =
+Tire.3 =
+Snapshot.TimeLimit =
+Snapshot.DistLimit =
+VehicleLoad.0.mass = 0
+VehicleLoad.0.pos = 0 0 0
+VehicleLoad.1.mass = 0
+VehicleLoad.1.pos = 0 0 0
+VehicleLoad.2.mass = 0
+VehicleLoad.2.pos = 0 0 0
+VehicleLoad.3.mass = 0
+VehicleLoad.3.pos = 0 0 0
+TrailerLoad.0.mass = 0
+TrailerLoad.0.pos = 0 0 0
+TrailerLoad.1.mass = 0
+TrailerLoad.1.pos = 0 0 0
+TrailerLoad.2.mass = 0
+TrailerLoad.2.pos = 0 0 0
+DrivMan.Init.Velocity = 0
+DrivMan.Init.GearNo = 0
+DrivMan.Init.SteerAng = 0
+DrivMan.Init.LaneOffset = 0
+DrivMan.Init.OperatorActive = 1
+DrivMan.Init.OperatorState = drive
+DrivMan.VhclOperator.Kind = IPGOperator 1
+DrivMan.nDMan = 1
+DrivMan.0.EndCondition = Time>359.8
+DrivMan.0.Cmds:
+	"	"
+	# Scenario 1 : LK-PCSR
+	# Constant velocity of pedestrian
+	"	Eval v_pede = ($v_target_1=8)/3.6"
+	"	Eval distance_trigger_1 = ($distance_trigger_1=60)"
+	"	Eval sin_direction = -0.5832"
+	"	Eval cos_direction = -0.8123"
+	""
+	"	# Trigger"
+	"	Eval first() ? t0 = 0"
+	"	Eval first() ? Init_P00_sRoad = Traffic.P00.sRoad"
+	"	Eval first( Vhcl.sRoad > Traffic.P00.sRoad-distance_trigger_1 & Vhcl.sRoad < Init_P00_sRoad ) ? t0 = DM.ManTime"
+	"	Eval first( Vhcl.sRoad > Traffic.P00.sRoad-distance_trigger_1 & Vhcl.sRoad < Init_P00_sRoad) ? x0_pede = Traffic.P00.tx"
+	"	Eval first( Vhcl.sRoad > Traffic.P00.sRoad-distance_trigger_1 & Vhcl.sRoad < Init_P00_sRoad) ? y0_pede = Traffic.P00.ty"
+	""
+	"	# Move pedestrian with constant velocity v_ped"
+	"	Eval t0>0 ? Traffic.P00.tx = x0_pede + cos_direction*v_pede*(DM.ManTime-t0)"
+	"	Eval t0>0 ? Traffic.P00.ty = y0_pede + sin_direction*v_pede*(DM.ManTime-t0)"
+	""
+	""
+	# Scenario 5 : LK-CCSL
+	# Constant velocity of pedestrian
+	"	Eval v_target_5 = ($v_target_5=8)/3.6"
+	"	Eval distance_trigger_5 = ($distance_trigger_5=30)"
+	"	Eval sin_direction_c = 0.6178"
+	"	Eval cos_direction_c = -0.7864"
+	""
+	"	# Trigger"
+	"	Eval first() ? t1 = 0"
+	"	Eval first() ? Init_C00_sRoad = Traffic.C00.sRoad"
+	"	Eval first( Vhcl.sRoad > Traffic.C00.sRoad-distance_trigger_5 & Vhcl.sRoad < Init_C00_sRoad) ? t1 = DM.ManTime"
+	"	Eval first( Vhcl.sRoad > Traffic.C00.sRoad-distance_trigger_5 & Vhcl.sRoad < Init_C00_sRoad) ? x0_cyc = Traffic.C00.tx"
+	"	Eval first( Vhcl.sRoad > Traffic.C00.sRoad-distance_trigger_5 & Vhcl.sRoad < Init_C00_sRoad) ? y0_cyc = Traffic.C00.ty"
+	""
+	"	# Move cyclist with constant velocity v_target_5"
+	"	Eval t1>0 ? Traffic.C00.tx = x0_cyc + cos_direction_c*v_target_5*(DM.ManTime-t1)"
+	"	Eval t1>0 ? Traffic.C00.ty = y0_cyc + sin_direction_c*v_target_5*(DM.ManTime-t1)"
+DrivMan.0.LongDyn = Driver 1 0 0
+DrivMan.0.LatDyn = Driver 0
+Traffic.IFF.FName = VILS_Route_A-1.csv
+Traffic.IFF.Time.Name = Time
+Traffic.N = 9
+Traffic.SpeedUnit = kmh
+Traffic.0.ObjectKind = Movable
+Traffic.0.ObjectClass = People
+Traffic.0.Name = P00
+Traffic.0.Info = UNNAMED Object 0
+Traffic.0.Movie.Geometry = 3D/People/Pedestrian_Male_Casual_01.manim
+Traffic.0.Color = 1.0 0.0 0.0
+Traffic.0.Basics.Dimension = 0.33 0.55 1.82
+Traffic.0.Basics.Offset = 0 0
+Traffic.0.Basics.Fr12CoM = 0.165
+Traffic.0.Init.Orientation = 0.0 0.0 90
+Traffic.0.RCSClass = RCS_Pedestrian
+Traffic.0.DetectMask = 1 1
+Traffic.0.Route = 7 1
+Traffic.0.Init.Road = 600 -6
+Traffic.0.Init.v = 0.0
+Traffic.0.FreeMotion = 1
+Traffic.0.Lighting = 0
+Traffic.0.UpdRate = 200
+Traffic.0.IFF.FM_tx.Name =
+Traffic.0.IFF.FM_tx.Factor = 1.0
+Traffic.0.IFF.FM_tx.Offset = 0.0
+Traffic.0.IFF.FM_ty.Name =
+Traffic.0.IFF.FM_ty.Factor = 1.0
+Traffic.0.IFF.FM_ty.Offset = 0.0
+Traffic.0.IFF.FM_tz.Name =
+Traffic.0.IFF.FM_tz.Factor = 1.0
+Traffic.0.IFF.FM_tz.Offset = 0.0
+Traffic.0.IFF.FM_rx.Name =
+Traffic.0.IFF.FM_rx.Factor = 1.0
+Traffic.0.IFF.FM_rx.Offset = 0.0
+Traffic.0.IFF.FM_ry.Name =
+Traffic.0.IFF.FM_ry.Factor = 1.0
+Traffic.0.IFF.FM_ry.Offset = 0.0
+Traffic.0.IFF.FM_rz.Name =
+Traffic.0.IFF.FM_rz.Factor = 1.0
+Traffic.0.IFF.FM_rz.Offset = 0.0
+Traffic.1.ObjectKind = Movable
+Traffic.1.ObjectClass = Car
+Traffic.1.Name = T00
+Traffic.1.Info = UNNAMED Object 1
+Traffic.1.Movie.Geometry = 3D/Vehicles/VW_Beetle_2012_Blue.mobj
+Traffic.1.Color = 1.0 0.0 0.0
+Traffic.1.Basics.Dimension = 4.28 1.82 1.28
+Traffic.1.Basics.Offset = 0.19 0
+Traffic.1.Basics.Fr12CoM = 2.15
+Traffic.1.Init.Orientation = 0.0 0.0 0
+Traffic.1.RCSClass = RCS_Car
+Traffic.1.DetectMask = 1 1
+Traffic.1.Route = 7 1
+Traffic.1.Init.Road = 1275 0
+Traffic.1.Init.v = $v_target_2=35
+Traffic.1.FreeMotion = 0
+Traffic.1.Lighting = 0
+Traffic.1.UpdRate = 200
+Traffic.1.Motion.Kind = 4Wheel
+Traffic.1.Motion.mass = 1530.0
+Traffic.1.Motion.I = 470.0  2080.0  2160.0
+Traffic.1.Motion.Overhang = 0.7  0.75
+Traffic.1.Motion.Cf = 1.4e5
+Traffic.1.Motion.Cr = 1.2e5
+Traffic.1.Motion.C_roll = 1.6e5
+Traffic.1.Motion.D_roll = 1.6e4
+Traffic.1.Motion.C_pitch = 2.3e5
+Traffic.1.Motion.D_pitch = 2.3e4
+Traffic.1.Motion.SteerCtrl.Ang_max = 40.0
+Traffic.1.Man.StartCondition = Vhcl.sRoad > Traffic.T00.sRoad - 50 & Vhcl.sRoad < Traffic.T00.sRoad
+Traffic.1.Man.TreatAtEnd = Hide
+Traffic.1.Man.N = 3
+Traffic.1.Man.0.Limit = t 20
+Traffic.1.Man.0.LongDyn = v $v_target_2=35
+Traffic.1.Man.0.EndCondition = Vhcl.sRoad > Traffic.T00.sRoad - $distance_trigger_2=18 & Vhcl.sRoad < Traffic.T00.sRoad
+Traffic.1.Man.1.Limit = t $duration_2=2
+Traffic.1.Man.1.LongDyn = v $v_target_2=35
+Traffic.1.Man.1.LatDyn = y_abs -3.5
+Traffic.1.Man.2.Limit = t 20
+Traffic.1.Man.2.LongDyn = v $v_target_2=35
+Traffic.2.ObjectKind = Movable
+Traffic.2.ObjectClass = Car
+Traffic.2.Name = T01
+Traffic.2.Info = UNNAMED Object 1
+Traffic.2.Movie.Geometry = 3D/Vehicles/VW_Beetle_2012_Blue.mobj
+Traffic.2.Color = 1.0 0.0 0.0
+Traffic.2.Basics.Dimension = 4.28 1.82 1.28
+Traffic.2.Basics.Offset = 0.19 0
+Traffic.2.Basics.Fr12CoM = 2.15
+Traffic.2.Init.Orientation = 0.0 0.0 0
+Traffic.2.RCSClass = RCS_Car
+Traffic.2.DetectMask = 1 1
+Traffic.2.Route = 7 1
+Traffic.2.Init.Road = 1570 3.5
+Traffic.2.Init.v = $v_target_3=30
+Traffic.2.FreeMotion = 0
+Traffic.2.Lighting = 0
+Traffic.2.UpdRate = 200
+Traffic.2.Motion.Kind = 4Wheel
+Traffic.2.Motion.mass = 1530.0
+Traffic.2.Motion.I = 470.0  2080.0  2160.0
+Traffic.2.Motion.Overhang = 0.7  0.75
+Traffic.2.Motion.Cf = 1.4e5
+Traffic.2.Motion.Cr = 1.2e5
+Traffic.2.Motion.C_roll = 1.6e5
+Traffic.2.Motion.D_roll = 1.6e4
+Traffic.2.Motion.C_pitch = 2.3e5
+Traffic.2.Motion.D_pitch = 2.3e4
+Traffic.2.Motion.SteerCtrl.Ang_max = 40.0
+Traffic.2.Man.StartCondition = Vhcl.sRoad > Traffic.T01.sRoad - 30 & Vhcl.sRoad < Traffic.T01.sRoad
+Traffic.2.Man.TreatAtEnd = Hide
+Traffic.2.Man.N = 3
+Traffic.2.Man.0.Limit = t 20
+Traffic.2.Man.0.LongDyn = v $v_target_3=30
+Traffic.2.Man.0.EndCondition = Vhcl.sRoad > Traffic.T01.sRoad - $distance_trigger_3=20
+Traffic.2.Man.1.Limit = t 5
+Traffic.2.Man.1.LongDyn = a $a_target_3=-9.81
+Traffic.2.Man.1.EndCondition = Traffic.T01.LongVel < 0.1
+Traffic.2.Man.2.Limit = t 20
+Traffic.2.Man.2.LongDyn = v 0
+Traffic.3.ObjectKind = Movable
+Traffic.3.ObjectClass = Car
+Traffic.3.Name = T02
+Traffic.3.Info = UNNAMED Object 1
+Traffic.3.Movie.Geometry = 3D/Vehicles/VW_Beetle_2012_Blue.mobj
+Traffic.3.Color = 1.0 0.0 0.0
+Traffic.3.Basics.Dimension = 4.28 1.82 1.28
+Traffic.3.Basics.Offset = 0.19 0
+Traffic.3.Basics.Fr12CoM = 2.15
+Traffic.3.Init.Orientation = 0.0 0.0 0
+Traffic.3.RCSClass = RCS_Car
+Traffic.3.DetectMask = 1 1
+Traffic.3.Route = 7 1
+Traffic.3.Init.Road = 2200 -3.5
+Traffic.3.Init.v = $v_target_4=30
+Traffic.3.FreeMotion = 0
+Traffic.3.Lighting = 0
+Traffic.3.UpdRate = 200
+Traffic.3.Motion.Kind = 4Wheel
+Traffic.3.Motion.mass = 1530.0
+Traffic.3.Motion.I = 470.0  2080.0  2160.0
+Traffic.3.Motion.Overhang = 0.7  0.75
+Traffic.3.Motion.Cf = 1.4e5
+Traffic.3.Motion.Cr = 1.2e5
+Traffic.3.Motion.C_roll = 1.6e5
+Traffic.3.Motion.D_roll = 1.6e4
+Traffic.3.Motion.C_pitch = 2.3e5
+Traffic.3.Motion.D_pitch = 2.3e4
+Traffic.3.Motion.SteerCtrl.Ang_max = 40.0
+Traffic.3.Man.StartCondition = Vhcl.sRoad > Traffic.T02.sRoad - 50 & Vhcl.sRoad < Traffic.C00.sRoad
+Traffic.3.Man.TreatAtEnd = Hide
+Traffic.3.Man.N = 3
+Traffic.3.Man.0.Limit = t 20
+Traffic.3.Man.0.LongDyn = v $v_target_4=30
+Traffic.3.Man.0.EndCondition = Vhcl.sRoad > Traffic.T02.sRoad - $distance_trigger_4=10
+Traffic.3.Man.1.Limit = t $duration_4=2
+Traffic.3.Man.1.LongDyn = v $v_target_4=30
+Traffic.3.Man.1.LatDyn = y_abs 0
+Traffic.3.Man.2.Limit = t 20
+Traffic.3.Man.2.LongDyn = v $v_target_4=30
+Traffic.4.ObjectKind = Movable
+Traffic.4.ObjectClass = Bicycle
+Traffic.4.Name = C00
+Traffic.4.Info = UNNAMED Object 4
+Traffic.4.Movie.Geometry = 3D/People/Cyclist_Male_01.manim
+Traffic.4.Color = 1.0 0.0 0.0
+Traffic.4.Basics.Dimension = 1.9 0.7 1.8
+Traffic.4.Basics.Offset = 0.0 0.0
+Traffic.4.Basics.Fr12CoM = 0.95
+Traffic.4.Init.Orientation = 0.0 0.0 -90
+Traffic.4.RCSClass = RCS_Bicycle
+Traffic.4.DetectMask = 1 1
+Traffic.4.Route = 7 1
+Traffic.4.Init.Road = 2780 6
+Traffic.4.Init.v = 0.0
+Traffic.4.FreeMotion = 1
+Traffic.4.Lighting = 0
+Traffic.4.UpdRate = 200
+Traffic.4.IFF.FM_tx.Name =
+Traffic.4.IFF.FM_tx.Factor = 1.0
+Traffic.4.IFF.FM_tx.Offset = 0.0
+Traffic.4.IFF.FM_ty.Name =
+Traffic.4.IFF.FM_ty.Factor = 1.0
+Traffic.4.IFF.FM_ty.Offset = 0.0
+Traffic.4.IFF.FM_tz.Name =
+Traffic.4.IFF.FM_tz.Factor = 1.0
+Traffic.4.IFF.FM_tz.Offset = 0.0
+Traffic.4.IFF.FM_rx.Name =
+Traffic.4.IFF.FM_rx.Factor = 1.0
+Traffic.4.IFF.FM_rx.Offset = 0.0
+Traffic.4.IFF.FM_ry.Name =
+Traffic.4.IFF.FM_ry.Factor = 1.0
+Traffic.4.IFF.FM_ry.Offset = 0.0
+Traffic.4.IFF.FM_rz.Name =
+Traffic.4.IFF.FM_rz.Factor = 1.0
+Traffic.4.IFF.FM_rz.Offset = 0.0
+Traffic.5.ObjectKind = Movable
+Traffic.5.ObjectClass = Car
+Traffic.5.Name = T03
+Traffic.5.Info = UNNAMED Object 5
+Traffic.5.Movie.Geometry = 3D/Vehicles/VW_Beetle_2012_Blue.mobj
+Traffic.5.Color = 1.0 0.0 0.0
+Traffic.5.Basics.Dimension = 4.28 1.82 1.28
+Traffic.5.Basics.Offset = 0.19 0.0
+Traffic.5.Basics.Fr12CoM = 2.15
+Traffic.5.Init.Orientation = 0.0 0.0 -90
+Traffic.5.RCSClass = RCS_Car
+Traffic.5.DetectMask = 1 1
+Traffic.5.Route = 7 1
+Traffic.5.Init.Road = 0 0
+Traffic.5.Init.v = 0.0
+Traffic.5.FreeMotion = 1
+Traffic.5.Lighting = 0
+Traffic.5.UpdRate = 200
+Traffic.5.IFF.FM_tx.Name = Sur00_tx
+Traffic.5.IFF.FM_tx.Factor = 1.0
+Traffic.5.IFF.FM_tx.Offset = 0.0
+Traffic.5.IFF.FM_ty.Name = Sur00_ty
+Traffic.5.IFF.FM_ty.Factor = 1.0
+Traffic.5.IFF.FM_ty.Offset = 0.0
+Traffic.5.IFF.FM_tz.Name = Sur00_tz
+Traffic.5.IFF.FM_tz.Factor = 1.0
+Traffic.5.IFF.FM_tz.Offset = 0.0
+Traffic.5.IFF.FM_rx.Name = Sur00_rx
+Traffic.5.IFF.FM_rx.Factor = 1.0
+Traffic.5.IFF.FM_rx.Offset = 0.0
+Traffic.5.IFF.FM_ry.Name = Sur00_ry
+Traffic.5.IFF.FM_ry.Factor = 1.0
+Traffic.5.IFF.FM_ry.Offset = 0.0
+Traffic.5.IFF.FM_rz.Name = Sur00_rz
+Traffic.5.IFF.FM_rz.Factor = 1.0
+Traffic.5.IFF.FM_rz.Offset = 0.0
+Traffic.6.ObjectKind = Movable
+Traffic.6.ObjectClass = Car
+Traffic.6.Name = T04
+Traffic.6.Info = UNNAMED Object 6
+Traffic.6.Movie.Geometry = 3D/Vehicles/VW_Beetle_2012_Blue.mobj
+Traffic.6.Color = 1.0 0.0 0.0
+Traffic.6.Basics.Dimension = 4.28 1.82 1.28
+Traffic.6.Basics.Offset = 0.19 0.0
+Traffic.6.Basics.Fr12CoM = 2.15
+Traffic.6.Init.Orientation = 0.0 0.0 -90
+Traffic.6.RCSClass = RCS_Car
+Traffic.6.DetectMask = 1 1
+Traffic.6.Route = 7 1
+Traffic.6.Init.Road = 0 0
+Traffic.6.Init.v = 0.0
+Traffic.6.FreeMotion = 1
+Traffic.6.Lighting = 0
+Traffic.6.UpdRate = 200
+Traffic.6.IFF.FM_tx.Name = Sur01_tx
+Traffic.6.IFF.FM_tx.Factor = 1.0
+Traffic.6.IFF.FM_tx.Offset = 0.0
+Traffic.6.IFF.FM_ty.Name = Sur01_ty
+Traffic.6.IFF.FM_ty.Factor = 1.0
+Traffic.6.IFF.FM_ty.Offset = 0.0
+Traffic.6.IFF.FM_tz.Name = Sur01_tz
+Traffic.6.IFF.FM_tz.Factor = 1.0
+Traffic.6.IFF.FM_tz.Offset = 0.0
+Traffic.6.IFF.FM_rx.Name = Sur01_rx
+Traffic.6.IFF.FM_rx.Factor = 1.0
+Traffic.6.IFF.FM_rx.Offset = 0.0
+Traffic.6.IFF.FM_ry.Name = Sur01_ry
+Traffic.6.IFF.FM_ry.Factor = 1.0
+Traffic.6.IFF.FM_ry.Offset = 0.0
+Traffic.6.IFF.FM_rz.Name = Sur01_rz
+Traffic.6.IFF.FM_rz.Factor = 1.0
+Traffic.6.IFF.FM_rz.Offset = 0.0
+Traffic.7.ObjectKind = Movable
+Traffic.7.ObjectClass = Car
+Traffic.7.Name = T05
+Traffic.7.Info = UNNAMED Object 7
+Traffic.7.Movie.Geometry = 3D/Vehicles/VW_Beetle_2012_Blue.mobj
+Traffic.7.Color = 1.0 0.0 0.0
+Traffic.7.Basics.Dimension = 4.28 1.82 1.28
+Traffic.7.Basics.Offset = 0.19 0.0
+Traffic.7.Basics.Fr12CoM = 2.15
+Traffic.7.Init.Orientation = 0.0 0.0 -90
+Traffic.7.RCSClass = RCS_Car
+Traffic.7.DetectMask = 1 1
+Traffic.7.Route = 7 1
+Traffic.7.Init.Road = 0 0
+Traffic.7.Init.v = 0.0
+Traffic.7.FreeMotion = 1
+Traffic.7.Lighting = 0
+Traffic.7.UpdRate = 200
+Traffic.7.IFF.FM_tx.Name = Sur02_tx
+Traffic.7.IFF.FM_tx.Factor = 1.0
+Traffic.7.IFF.FM_tx.Offset = 0.0
+Traffic.7.IFF.FM_ty.Name = Sur02_ty
+Traffic.7.IFF.FM_ty.Factor = 1.0
+Traffic.7.IFF.FM_ty.Offset = 0.0
+Traffic.7.IFF.FM_tz.Name = Sur02_tz
+Traffic.7.IFF.FM_tz.Factor = 1.0
+Traffic.7.IFF.FM_tz.Offset = 0.0
+Traffic.7.IFF.FM_rx.Name = Sur02_rx
+Traffic.7.IFF.FM_rx.Factor = 1.0
+Traffic.7.IFF.FM_rx.Offset = 0.0
+Traffic.7.IFF.FM_ry.Name = Sur02_ry
+Traffic.7.IFF.FM_ry.Factor = 1.0
+Traffic.7.IFF.FM_ry.Offset = 0.0
+Traffic.7.IFF.FM_rz.Name = Sur02_rz
+Traffic.7.IFF.FM_rz.Factor = 1.0
+Traffic.7.IFF.FM_rz.Offset = 0.0
+Traffic.8.ObjectKind = Movable
+Traffic.8.ObjectClass = Car
+Traffic.8.Name = T06
+Traffic.8.Info = UNNAMED Object 8
+Traffic.8.Movie.Geometry = 3D/Vehicles/VW_Beetle_2012_Blue.mobj
+Traffic.8.Color = 1.0 0.0 0.0
+Traffic.8.Basics.Dimension = 4.28 1.82 1.28
+Traffic.8.Basics.Offset = 0.19 0.0
+Traffic.8.Basics.Fr12CoM = 2.15
+Traffic.8.Init.Orientation = 0.0 0.0 -90
+Traffic.8.RCSClass = RCS_Car
+Traffic.8.DetectMask = 1 1
+Traffic.8.Route = 7 1
+Traffic.8.Init.Road = 0 0
+Traffic.8.Init.v = 0.0
+Traffic.8.FreeMotion = 1
+Traffic.8.Lighting = 0
+Traffic.8.UpdRate = 200
+Traffic.8.IFF.FM_tx.Name = Sur03_tx
+Traffic.8.IFF.FM_tx.Factor = 1.0
+Traffic.8.IFF.FM_tx.Offset = 0.0
+Traffic.8.IFF.FM_ty.Name = Sur03_ty
+Traffic.8.IFF.FM_ty.Factor = 1.0
+Traffic.8.IFF.FM_ty.Offset = 0.0
+Traffic.8.IFF.FM_tz.Name = Sur03_tz
+Traffic.8.IFF.FM_tz.Factor = 1.0
+Traffic.8.IFF.FM_tz.Offset = 0.0
+Traffic.8.IFF.FM_rx.Name = Sur03_rx
+Traffic.8.IFF.FM_rx.Factor = 1.0
+Traffic.8.IFF.FM_rx.Offset = 0.0
+Traffic.8.IFF.FM_ry.Name = Sur03_ry
+Traffic.8.IFF.FM_ry.Factor = 1.0
+Traffic.8.IFF.FM_ry.Offset = 0.0
+Traffic.8.IFF.FM_rz.Name = Sur03_rz
+Traffic.8.IFF.FM_rz.Factor = 1.0
+Traffic.8.IFF.FM_rz.Offset = 0.0
+DrivMan.OW.Active = 1
+DrivMan.OW.Quantities = Time User1 User2 User3 User4 User5 User6 User7 User8 User9 User10 User11 User12 User13 User14 User15 User16 User17 User18 User19 User20 User21 User22 User23 User24
+DrivMan.OW.FName = VILS_Route_A-1.csv
+DrivMan.OW.StartGearNo = 1
+DrivMan.OW.StartVelocity =
+DrivMan.OW.GasMax = 0.5
+DrivMan.OW.RefCh = Time
+DrivMan.OW.ConsiderRoadSigns = 0
+DrivMan.OW.sRoute.Offset = 0
+DrivMan.OW.Time.Name = Time
+DrivMan.OW.Time.Factor = 1.0
+DrivMan.OW.User1.Name = Ego_x
+DrivMan.OW.User1.Factor = 1.0
+DrivMan.OW.User1.Offset = 0.0
+DrivMan.OW.User2.Name = Ego_y
+DrivMan.OW.User2.Factor = 1.0
+DrivMan.OW.User2.Offset = 0.0
+DrivMan.OW.User3.Name = zero
+DrivMan.OW.User3.Factor = 1.0
+DrivMan.OW.User3.Offset = 0.0
+DrivMan.OW.User4.Name = Ego_vx
+DrivMan.OW.User4.Factor = 1.0
+DrivMan.OW.User4.Offset = 0.0
+DrivMan.OW.User5.Name = Ego_vy
+DrivMan.OW.User5.Factor = 1.0
+DrivMan.OW.User5.Offset = 0.0
+DrivMan.OW.User6.Name = zero
+DrivMan.OW.User6.Factor = 1.0
+DrivMan.OW.User6.Offset = 0.0
+DrivMan.OW.User7.Name = Ego_ax
+DrivMan.OW.User7.Factor = 1.0
+DrivMan.OW.User7.Offset = 0.0
+DrivMan.OW.User8.Name = Ego_ay
+DrivMan.OW.User8.Factor = 1.0
+DrivMan.OW.User8.Offset = 0.0
+DrivMan.OW.User9.Name = zero
+DrivMan.OW.User9.Factor = 1.0
+DrivMan.OW.User9.Offset = 0.0
+DrivMan.OW.User10.Name = zero
+DrivMan.OW.User10.Factor = 1.0
+DrivMan.OW.User10.Offset = 0.0
+DrivMan.OW.User11.Name = zero
+DrivMan.OW.User11.Factor = 1.0
+DrivMan.OW.User11.Offset = 0.0
+DrivMan.OW.User12.Name = zero
+DrivMan.OW.User12.Factor = 1.0
+DrivMan.OW.User12.Offset = 0.0
+DrivMan.OW.User13.Name = zero
+DrivMan.OW.User13.Factor = 1.0
+DrivMan.OW.User13.Offset = 0.0
+DrivMan.OW.User14.Name = zero
+DrivMan.OW.User14.Factor = 1.0
+DrivMan.OW.User14.Offset = 0.0
+DrivMan.OW.User15.Name = zero
+DrivMan.OW.User15.Factor = 1.0
+DrivMan.OW.User15.Offset = 0.0
+DrivMan.OW.User16.Name = zero
+DrivMan.OW.User16.Factor = 1.0
+DrivMan.OW.User16.Offset = 0.0
+DrivMan.OW.User17.Name = zero
+DrivMan.OW.User17.Factor = 1.0
+DrivMan.OW.User17.Offset = 0.0
+DrivMan.OW.User18.Name = zero
+DrivMan.OW.User18.Factor = 1.0
+DrivMan.OW.User18.Offset = 0.0
+DrivMan.OW.User19.Name = zero
+DrivMan.OW.User19.Factor = 1.0
+DrivMan.OW.User19.Offset = 0.0
+DrivMan.OW.User20.Name = zero
+DrivMan.OW.User20.Factor = 1.0
+DrivMan.OW.User20.Offset = 0.0
+DrivMan.OW.User21.Name = Ego_yaw
+DrivMan.OW.User21.Factor = 1.0
+DrivMan.OW.User21.Offset = 0.0
+DrivMan.OW.User22.Name = zero
+DrivMan.OW.User22.Factor = 1.0
+DrivMan.OW.User22.Offset = 0.0
+DrivMan.OW.User23.Name = zero
+DrivMan.OW.User23.Factor = 1.0
+DrivMan.OW.User23.Offset = 0.0
+DrivMan.OW.User24.Name = zero
+DrivMan.OW.User24.Factor = 1.0
+DrivMan.OW.User24.Offset = 0.0
+ErrorClass.0.Action = abort
+ErrorClass.0.Save = 0
+ErrorClass.0.WarningLimit = 3 5
+ErrorClass.1.Action = abort
+ErrorClass.1.Save = 0
+ErrorClass.1.WarningLimit = 3 5
+ErrorClass.2.Action = abort
+ErrorClass.2.Save = 0
+ErrorClass.2.WarningLimit = 3 5
+ErrorClass.3.Action = abort
+ErrorClass.3.Save = 0
+ErrorClass.3.WarningLimit = 3 5
+ErrorClass.4.Action = abort
+ErrorClass.4.Save = 0
+ErrorClass.4.WarningLimit = 3 5
+ErrorClass.5.Action = abort
+ErrorClass.5.Save = 0
+ErrorClass.5.WarningLimit = 3 5
+ErrorClass.6.Action = abort
+ErrorClass.6.Save = 0
+ErrorClass.6.WarningLimit = 10 5
+ErrorClass.7.Action = abort
+ErrorClass.7.Save = 0
+ErrorClass.7.WarningLimit = 3 5
+ErrorClass.10.Action = abort
+ErrorClass.10.Save = 0
+ErrorClass.10.WarningLimit = 3 5
+ErrorClass.11.Action = abort
+ErrorClass.11.Save = 0
+ErrorClass.11.WarningLimit = 3 5
+Road.FName = Sangam_AD_TestRoad_v2.rd5
+Road.VhclStartPos = 450 0 0
+Road.VhclRoute = Route_7
+Road.RouteId = 7
+Env.StartTime.Year = 2014
+Env.StartTime.Month = 7
+Env.StartTime.Day = 1
+Env.StartTime.Hour = 12
+Env.StartTime.Min = 0
+Env.StartTime.Sec = 0
+Env.StartTime.DeltaUTC = 0.0
+Env.GNav.Active = 1
+Env.Temperature = 20.0
+Env.AirDensity = 1.205
+Env.AirPressure = 1.013
+Env.AirHumidity = 60
+Env.SolarRadiation = 400.0
+Env.RainRate = 0.0
+Env.VisRangeInFog = 10000.0
+Env.Wind.Kind = none
+Env.Wind.Velocity = 0.0
+Env.Wind.Angle = 0.0
+Env.Sun.Position = angleDefinition
+Env.Sun.Azimuth = 45.0
+Env.Sun.Elevation = 45.0
+Env.Kind = Generic
+Env.Temp.Offset_Elev = -0.0065
+Env.Temp.Offset_sRoad.Amplify = 1.0
+Env.Temp.Offset_sRoad.On = 0
+Env.Temp.Offset_Time.Amplify = 1.0
+Env.Temp.Offset_Time.On = 1
+Env.Temp.Offset_Time:
+	0.0 -2.0
+	3.0 -2.5
+	6.0 -2.7
+	7.5 -2.7
+	9.0 -2.5
+	10.0 -2.3
+	11.0 -1.6
+	12.0 0.0
+	13.0 1.4
+	14.0 2.1
+	15.5 2.5
+	17.0 2.2
+	18.0 1.7
+	19.0 1.1
+	20.0 0.2
+	21.0 -0.6
+	22.0 -1.1
+	23.0 -1.6
+	24.0 -2.0
+Driver.ParamIdent = IPGDriver 5
+Driver.Mode = std
+Driver.Long.DrivMaxSpeed = 0
+Driver.Long.CruisingSpeed = 150
+Driver.CornerCutCoef = 0.5
+Driver.ConsiderTraffic = 1
+Driver.Traffic.TimeGapMin = 1.8
+Driver.Traffic.TimeGapMax = 5.0
+Driver.Traffic.DistMin = 6
+Driver.Traffic.DistMax = 250
+Driver.Traffic.EcoCoef = 0.75
+Driver.Traffic.Overtake = 0
+Driver.Traffic.Overtake_Rate = 1
+Driver.Traffic.Overtake_dSpeedMin = 10
+Driver.Long.dtAccBrake = 0.5
+Driver.Long.axMax = 3.0
+Driver.Long.axMin = -4.0
+Driver.Long.ayMax = 4.0
+Driver.Long.GGExp:
+	50 1.0 1.0
+Driver.Long.DevMax = 0.0
+Driver.Long.tReact = 0.0
+Driver.Long.TractionControl = 1
+Driver.DecShift.UseBrakePark = 0
+Driver.DecShift.tSwitchGear = 1.0
+Driver.DecShift.nEngine.Limits:
+	1500 4000
+Driver.DecShift.nEngine.Shift:
+	2000 3000
+Driver.Lat.DevMax = 0.0
+Driver.Lat.tReact = 0.0
+Driver.Knowl.Long.tActionMin = 4
+Driver.Knowl.Lat.StWhlAngleMax = 630
+Driver.Knowl.Lat.StWhlAngleVelMax = 500
+Driver.Knowl.Lat.StWhlAngleAccMax = 3000
+Driver.Learn.VehicleLimits.TestRun =
+Driver.Learn.VehicleLimits.Date = 0
+Driver.Learn.ControllerDyn.TestRun =
+Driver.Learn.ControllerDyn.Date = 0
+Driver.Learn.MaxSpeed.TestRun =
+Driver.Learn.MaxSpeed.Date = 0
+Driver.Learn.Remember = 0
+Driver.Learn.Friction = 1.0
+Driver.Knowl.Long.tPreviewBra = 0.6
+Driver.Knowl.Long.tPreviewAcc = 1.5
+Driver.Knowl.Lat.tPreview = 0.8
+Driver.Learn.NEng_S = 1
+Meas.RefMode = absolute
+Meas.useAbsRollPitch = 0
+Meas.useHeight = 0
+VILaddon.Road.UseHeight = 1
+VILaddon.Road.UsePitch = 1
+VILaddon.Road.UsePitchConst = 50
+VILaddon.Road.UsePitchFilter = 0
+VILaddon.Road.UseRoll = 1
+VILaddon.Road.UseRollConst = 50
+VILaddon.Road.UseRollFilter = 0
+VILaddon.useHeadingOffset = 0
+AddParam:
+	Meas.RefMode
+	Meas.useAbsRollPitch
+	Meas.useHeight
+	VILaddon.Road.UseHeight
+	VILaddon.Road.UsePitch
+	VILaddon.Road.UsePitchConst
+	VILaddon.Road.UsePitchFilter
+	VILaddon.Road.UseRoll
+	VILaddon.Road.UseRollConst
+	VILaddon.Road.UseRollFilter
+	VILaddon.useHeadingOffset

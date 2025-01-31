@@ -1,0 +1,36 @@
+
+---
+Date:
+	Mon Mar 15 06:41:12 +1000 2021
+Testrun:
+	LK_COR_STP_ST
+Motion Data:
+	D:/UI/00. Research/06. Scenario Generation Code/genScenario_031521/Code/../PSD-22-13(1020)/SimOutput/LK_COR_STP_ST/Variation 0.erg
+Missing Quantitites:
+	Traffic.T01.DetectLevel  Traffic.T01.rx           Traffic.T01.tx
+	Traffic.T01.LongVel      Traffic.T01.ry           Traffic.T01.ty
+	Traffic.T01.State        Traffic.T01.rz           Traffic.T01.tz
+
+---
+Date:
+	Mon Mar 15 06:42:01 +1000 2021
+Testrun:
+	LK_COR_STP_ST
+Motion Data:
+	D:/UI/00. Research/06. Scenario Generation Code/genScenario_031521/Code/../PSD-22-13(1020)/SimOutput/LK_COR_STP_ST/Variation 0.erg
+Missing Quantitites:
+	Traffic.T01.DetectLevel  Traffic.T01.rx           Traffic.T01.tx
+	Traffic.T01.LongVel      Traffic.T01.ry           Traffic.T01.ty
+	Traffic.T01.State        Traffic.T01.rz           Traffic.T01.tz
+
+---
+Date:
+	Mon Mar 15 06:46:18 +1000 2021
+Testrun:
+	LK_COR_STP_ST
+Motion Data:
+	D:/UI/00. Research/06. Scenario Generation Code/genScenario_031521/Code/../PSD-22-13(1020)/SimOutput/LK_COR_STP_ST/Variation 0.erg
+Missing Quantitites:
+	Traffic.T01.DetectLevel  Traffic.T01.rx           Traffic.T01.tx
+	Traffic.T01.LongVel      Traffic.T01.ry           Traffic.T01.ty
+	Traffic.T01.State        Traffic.T01.rz           Traffic.T01.tz
