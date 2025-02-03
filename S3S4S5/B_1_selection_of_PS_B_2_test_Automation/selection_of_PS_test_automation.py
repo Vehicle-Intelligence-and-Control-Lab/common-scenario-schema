@@ -24,13 +24,13 @@ query = {
   "$and": [
     {
       "admin.filePath.raw": {
-        "$regex": "LK_CCIR_ST",
+        "$regex": "LK_CIR_ST",
         "$options": "i"
       }
     },
     {
       "admin.filePath.raw": {
-        "$regex": "Precrash",
+        "$regex": "morai",
         "$options": "i"
       }
     },
@@ -44,7 +44,7 @@ query = {
         },
         {
           "admin.dataType": {
-            "$regex": "testrun",
+            "$regex": "xosc",
             "$options": "i"
           }
         }
@@ -157,7 +157,7 @@ for rawPS_doc in rawPS_result:
     else:
         sampled_PS = SampleParam(linear_spacing_PS, num_of_concrete).sampled_param_table
     if data_type == 'xosc':
-        sampled_json_path = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\MORAI Project\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
+        sampled_json_path = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\MORAI Project\\Json\\{logical_scenario}\\{folder_date}\\{logical_scenario}_SPS.json'
         sampled_PS_dir = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\MORAI Project\\PS\\{logical_scenario}\\{folder_date}'
         sampled_PS_path = os.path.join(sampled_PS_dir, f'{logical_scenario}_SPS.csv')
         sampled_PS.to_csv(sampled_PS_path, index=False)
@@ -217,10 +217,10 @@ for rawPS_doc in rawPS_result:
         print(f"MongoDB에 업로드 완료! Document ID: {insert_result.inserted_id}")
 
 
-    # # Create xosc file
-    # if data_type == 'xosc':
-    #     output_dir = f'.\\output\\{logical_scenario}'
-    #     XOSCGenerator(logical_path, sampled_PS_path, output_dir, logical_scenario)
+    # Create xosc file
+    if data_type == 'xosc':
+        output_dir = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\Data\\ConcreteScenario\\{logical_scenario}\\{folder_date}'
+        XOSCGenerator(logical_path, sampled_PS_path, output_dir, logical_scenario)
 
 
     # Run simulation
@@ -242,3 +242,8 @@ for rawPS_doc in rawPS_result:
             eng.scenario_generation(matlab_func_path, logical_scenario, param_space_path,
                                             toggle_IDM, toggle_testAutomation, toggle_erg2mat,
                                             toggle_genCollisionGT, toggle_genCAGT, toggle_movie_export, nargout=0)
+
+
+
+
+
