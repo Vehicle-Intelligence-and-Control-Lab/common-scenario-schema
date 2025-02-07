@@ -23,10 +23,10 @@ Precrash_Scenario_Catalog_Car_to_Car = 0
 Precrash_Scenario_Catalog_Car_to_VRU = 1
 
 # Logical scenario 생성 토글
-single_toggle = 1              # 1:ON  0:OFF
+single_toggle = 0              # 1:ON  0:OFF
 i = 0                          # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
 
-multiple_toggle = 0             # 1:ON  0:OFF
+multiple_toggle = 1             # 1:ON  0:OFF
 
 # 파일 경로
 registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Registration"

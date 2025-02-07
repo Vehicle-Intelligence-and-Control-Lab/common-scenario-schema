@@ -24,13 +24,7 @@ query = {
   "$and": [
     {
       "admin.filePath.raw": {
-        "$regex": "LK_CIR_ST",
-        "$options": "i"
-      }
-    },
-    {
-      "admin.filePath.raw": {
-        "$regex": "morai",
+        "$regex": "LK_CCIR_ST",
         "$options": "i"
       }
     },
@@ -44,7 +38,7 @@ query = {
         },
         {
           "admin.dataType": {
-            "$regex": "xosc",
+            "$regex": "testrun",
             "$options": "i"
           }
         }
