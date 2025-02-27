@@ -17,28 +17,34 @@ import shutil
 
 
 
-#-------------Setting--------------------------------------------------
+#-------------Configuration--------------------------------------------------
 num_of_concrete =10
-sampling_num = 6
+sampling_num = 20
 query = {
   "$and": [
     {
       "admin.filePath.raw": {
-        "$regex": "LK_CCIR_ST",
+        "$regex": "sotif",
+        "$options": "i"
+      }
+    },
+    {
+      "admin.filePath.raw": {
+        "$regex": "LT_OVE",
         "$options": "i"
       }
     },
     {
       "$or": [
         {
-          "admin.filePath.raw": {
-            "$regex": "rawPS",
+          "admin.dataType": {
+            "$regex": "xosc",
             "$options": "i"
           }
         },
         {
-          "admin.dataType": {
-            "$regex": "testrun",
+          "admin.filePath.raw": {
+            "$regex": "rawPS",
             "$options": "i"
           }
         }
@@ -49,7 +55,7 @@ query = {
 
 
 # 시뮬레이션 활성화
-toggle_run_simulation = 1  # 1: 활성화, 0: 비활성화
+toggle_run_simulation = 0  # 1: 활성화, 0: 비활성화
 
 
 # CarMaker 시뮬레이션 설정
@@ -213,7 +219,15 @@ for rawPS_doc in rawPS_result:
 
     # Create xosc file
     if data_type == 'xosc':
-        output_dir = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\Data\\ConcreteScenario\\{logical_scenario}\\{folder_date}'
+        main_path = str(os.getcwd())
+        output_dir = os.path.join(main_path, 'S3S4S5', 'B_1_selection_of_PS_B_2_test_Automation', 'utils', 'morai simulator api', 'data','openscenario', 'V_RHT_Suburb_02', logical_scenario, folder_date)
+        # output_dir = f'utils\\morai simulator api\\data\\openscenario\\V_RHT_Suburb_02\\{logical_scenario}\\{folder_date}'
+        # output_dir = f'\\\\192.168.75.251\\Shares\\MORAI Scenario Data\\Scenario Catalog for SOTIF\\Data\\ConcreteScenario\\{logical_scenario}\\{folder_date}'
+        
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
+            print(f"디렉토리가 생성되었습니다: {output_dir}")
+
         XOSCGenerator(logical_path, sampled_PS_path, output_dir, logical_scenario)
 
 

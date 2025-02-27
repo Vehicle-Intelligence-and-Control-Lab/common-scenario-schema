@@ -24,12 +24,12 @@ from pymongo import MongoClient  # 추가
 ##################### Setting ##########################
 
 # 생성할 Logical scenario catalog
-MORAI_Sceanrio_Catalog_KATRI = 0
+MORAI_Sceanrio_Catalog_KATRI = 1
 MORAI_Sceanrio_Catalog_SOTIF = 0
 Precrash_Scenario_Catalog_Augmented = 0
 Precrash_Scenario_Catalog_IDM = 0
 Precrash_Scenario_Catalog_Car_to_Car = 0
-Precrash_Scenario_Catalog_Car_to_VRU = 1
+Precrash_Scenario_Catalog_Car_to_VRU = 0
 
 # Folder date
 # folder_date = '060522'
@@ -39,14 +39,25 @@ Precrash_Scenario_Catalog_Car_to_VRU = 1
 # folder_date = '103024'
 # folder_date = '102124'
 # folder_date = '102824'
-folder_date = '013025'
+# folder_date = '013025'
+# folder_date = '111424'
+folder_date = '111624'
 
 
 # Logical scenario 생성 토글
 single_toggle = 1               # 1:ON  0:OFF
-i = 0                           # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
+i = 25                           # 생성할 Logical scenario 번호 (single toggle에 해당, 가장 아래 번호 리스트 확인 가능)
 
 multiple_toggle = 0             # 1:ON  0:OFF
+
+# 파일 경로
+
+if MORAI_Sceanrio_Catalog_KATRI:
+    save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\Json"
+    registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\Registration"
+else:
+    save_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Json"
+    registration_dir = r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\Registration"
 
 # MongoDB 연결 설정
 client = MongoClient('mongodb://192.168.75.251:27017/')
@@ -75,8 +86,8 @@ def upload_to_mongodb(json_file_path):
 def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
     if save_dir is None:
         tmp_dir = PS_dir.split('\\PS')[0]
-        raw_PS_dir = os.path.join(PS_dir, scenario_name, folder_date)
-        tmp_save_dir = os.path.join(tmp_dir, 'Json', scenario_name, folder_date)
+        raw_PS_dir = os.path.join(PS_dir, scenario_name, folder_date).replace('D:', '\\\\192.168.75.251')
+        tmp_save_dir = os.path.join(tmp_dir, 'Json', scenario_name, folder_date).replace('D:', '\\\\192.168.75.251')
             
     if os.path.isdir(raw_PS_dir):
         # 저장할 경로의 폴더가 없으면 생성
@@ -93,7 +104,7 @@ def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
         PS_CSV_File_name = raw_file[0].split('.')[0]
         file_name = PS_CSV_File_name + ".json"
         save_dir = os.path.join(tmp_save_dir, file_name)
-        tmk = Makejson(PS_dir, PS_CSV_File_name, folder_date)
+        tmk = Makejson(PS_dir, PS_CSV_File_name, registration_dir, folder_date)
         
         #admin
         if 'D:' in tmk.PS_file_path :
@@ -101,7 +112,14 @@ def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
         else:
             css['admin']['filePath']['raw'] = tmk.PS_file_path
         css['admin']['filePath']['exported'] = " "
-        css['admin']['filePath']['registration'] = " "
+
+        # registration_dir 확인 및 설정
+        if os.path.exists(registration_dir):
+            css['admin']['filePath']['registration'] = registration_dir.replace('D:', '\\\\192.168.75.251')
+        else:
+            css['admin']['filePath']['registration'] = " "
+            print(f"[경고] Registration 디렉터리가 존재하지 않습니다: {registration_dir}") # registration 값 설정하지 않음
+        
         css['admin']['filePath']['perception']['LDT'] = " " 
         css['admin']['filePath']['perception']['SF'] = " "
         css['admin']['filePath']['perception']['recognition'] = " "
@@ -130,8 +148,21 @@ def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
         css['surroundings'] = " "
         
         #scenarios
-        css['scenarios'] = " "
+        css['scenarios']['dataSources']['expertKnowledge'] = []
+
+        for expert in tmk.expertKnowledge:
+            css['scenarios']['dataSources']['expertKnowledge'].append(
+                expert
+        )
+
+        css['scenarios']['dataSources']['accidentData'] = []
         
+        for data in tmk.accidentData:
+            css['scenarios']['dataSources']['accidentData'].append(
+                data
+            )
+
+
         #parameterSpace
         css['parameterSpace']['reduceParam'] = " "
         css['parameterSpace']['samplingMethod'] = " "
@@ -140,7 +171,8 @@ def make_CSS(PS_dir, folder_date, scenario_name, save_dir = None):
             css['parameterSpace']['parameters'].append(
                 paramter
             )
-                
+
+
         #road
         css['road'] = " "
         #Meta
@@ -166,7 +198,7 @@ if __name__ == "__main__":
 
     # Logical scenario catalog
     if MORAI_Sceanrio_Catalog_KATRI == 1:
-        PS_dir =r"D:\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\PS"
+        PS_dir =r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for KATRI\MORAI Project\PS"
         simulation_datas = ["Backing",                       # 0 
                             "DoubleParked",                  # 1
                             "EndofTrafficJam",               # 2
@@ -186,16 +218,13 @@ if __name__ == "__main__":
                             "Cut_in",                         # 16
                             "Cut_Through",                    # 17
                             "교통신호대응(III)",               # 18
-                            "LK_LFL2R_IN",                    # 19
-                            "LK_LFR2L_IN",                    # 20
-                            "LK_LTOD2R_IN",                   # 21
-                            "LK_RTR2SD_IN",                   # 22
-                            "LT_LFL2R_IN",                    # 23
-                            "LT_LFR2L_IN",                    # 24
-                            "LT_OVE_IN",                      # 25
-                            "Merge",                          # 26
-                            "Overtaking_4th",                 # 27
-                            "RT_LFL2R_IN",                    # 28
+                            "Merge",                          # 19
+                            "Overtaking_4th",                 # 20
+                            "LK-CL",                          # 21
+                            "LK-CR",                          # 22
+                            "LK-TL",                          # 23
+                            "LT-CL",                          # 24
+                            "LT-OC",                          # 25
                             ]
     elif MORAI_Sceanrio_Catalog_SOTIF == 1:      
             PS_dir =r"\\192.168.75.251\Shares\MORAI Scenario Data\Scenario Catalog for SOTIF\MORAI Project\PS"

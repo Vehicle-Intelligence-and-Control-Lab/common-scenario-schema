@@ -84,6 +84,8 @@ class XOSCGenerator:
         
         # Add extra vehicle length to 'dist_trigger' parameters
         if 'dist_trigger' in test_matrix.columns:
+            filtered_name_list = [name for name in entity_info['name'] if name != 'reference point']
+            entity_info['name'] = entity_info['name'][:len(entity_info['entityName'])]
             for idx, entity in enumerate(entity_info['name']):
                 vehicle_length = self.vehicle_spec.get(entity_info['entityName'][idx], {}).get('Length', 0)
                 test_matrix['dist_trigger'] += vehicle_length
